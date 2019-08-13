@@ -1,9 +1,8 @@
 %{
 
-/* Se necesita esto para la llamada a atof() , atoi más abajo */
+/* Se necesita esto para la llamada a atof() , atoi mas abajo */
 
-#include <math.h>
-#include <stdio.h>
+#include "libreria.h"
 int acum = 0;
 
 %}
@@ -23,7 +22,6 @@ PRESERVADA	while|do|if|else|for|int|char|return|case|switch
 {CREAL}       {printf("La cadena %s representa una constante real\n", yytext);}
 {PRESERVADA}  {printf("La cadena %s representa una palabra reservada\n", yytext);}
 {ID}          {printf("La cadena %s representa un identificador\n", yytext);}
-[ \t\n]+          /* se come los espacios en blanco */
 
 %%
 
@@ -32,4 +30,4 @@ int main(){
     yyin = fopen("entrada.txt","r");
     yylex();
     return 0;
-    }
+}
