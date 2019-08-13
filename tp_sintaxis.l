@@ -17,7 +17,6 @@ COM 		\/\*(.|\n)*\*\/
 LIT  		\"([ -!#-~]|\\\")*\"
 PUNT		'[-\(-~]' | '\\[ontvafbr]'
 PRESERVADA	while|do|if|else|for|int|char|return|case|switch|auto|break|const|continue|default|double|enum|extern|float|goto|long|register|short|signed|sizeof|static|struct|typedef|union|unsigned|void|volatile
-
 %%
 
 {CEDECIMAL}   {acum = acum + atoi(yytext); printf("El valor acumulado es %d\n", acum);}
@@ -26,6 +25,11 @@ PRESERVADA	while|do|if|else|for|int|char|return|case|switch|auto|break|const|con
 {CREAL}       {printf("La cadena %s representa una constante real\n", yytext);}
 {PRESERVADA}  {printf("La cadena %s representa una palabra reservada\n", yytext);}
 {ID}          {printf("La cadena %s representa un identificador\n", yytext);}
+{COM}         {printf("La cadena %s representa un comentario\n", yytext);}
+{COMLINEA}    {printf("La cadena %s representa un comentario de linea\n", yytext);}
+{PUNT}        {printf("La cadena %s representa un caracter de puntuacion\n", yytext);}
+{LIT}         {printf("La cadena %s representa un literal cadena\n", yytext);}
+[ \t\n]+          /* se come los espacios en blanco */
 
 %%
 
