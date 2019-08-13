@@ -1,9 +1,8 @@
 %{
 
-/* Se necesita esto para la llamada a atof() , atoi más abajo */
+/* Se necesita esto para la llamada a atof() , atoi mas abajo */
 
-#include <math.h>
-#include <stdio.h>
+#include "libreria.h"
 int acum = 0;
 
 %}
@@ -39,4 +38,4 @@ int main(){
     yyin = fopen("entrada.txt","r");
     yylex();
     return 0;
-    }
+}
