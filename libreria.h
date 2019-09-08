@@ -5,13 +5,13 @@
 typedef unsigned int t_uint;
 
 typedef struct t_nodo_contador {
-    t_nodo_contador* siguiente;
+    struct t_nodo_contador* siguiente;
     t_uint cantidad;
     char* valor;
 } t_nodo_contador;
 
 typedef struct t_nodo {
-    t_nodo* siguiente;
+    struct t_nodo* siguiente;
     char* valor;
 } t_nodo;
 
