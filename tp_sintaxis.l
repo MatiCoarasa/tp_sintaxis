@@ -16,7 +16,7 @@ COMLINEA    \/\/(.)*
 COM 		\/\*([^*]|[\r\n])*\*\/
 LIT  		\".*\"
 PUNT		[-\\(-~]|\\[0ntvafbr]
-OPERATORS	(\+\+|--|==|>=|<=|!=|<<|>>|!=|\+=|-=|\*=|\/=|%=|\+|-|\*|%|=|&&|\|\||!)
+OPERATORS	(\+\+|--|==|>=|<=|!=|<|>|!=|\+=|-=|\*=|\/=|%=|\+|-|\*|%|=|&&|\|\||!)
 PRESERVADA	while|do|if|else|for|int|char|return|case|switch|auto|break|const|continue|default|double|enum|extern|float|goto|long|register|short|signed|sizeof|static|struct|typedef|union|unsigned|void|volatile
 %%
 
