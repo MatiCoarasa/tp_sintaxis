@@ -1,7 +1,6 @@
 #include "libreria.h"
 
 
-
 void agregarNodo(char* valor, t_nodo* lista){
 
     t_nodo* nuevoNodo = (t_nodo*)malloc(sizeof(t_nodo));
