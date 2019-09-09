@@ -1,9 +1,10 @@
 %{
 
-/* Se necesita esto para la llamada a atof() , atoi mas abajo */
-
 #include "libreria.h"
-int acum = 0;
+
+int acumuladorDecimal = 0;
+
+
 
 %}
 
@@ -20,11 +21,11 @@ OPERATORS	(\+\+|--|==|>=|<=|!=|<|>|!=|\+=|-=|\*=|\/=|%=|\+|-|\*|%|=|&&|\|\||!)
 PRESERVADA	while|do|if|else|for|int|char|return|case|switch|auto|break|const|continue|default|double|enum|extern|float|goto|long|register|short|signed|sizeof|static|struct|typedef|union|unsigned|void|volatile
 %%
 
-{CEDECIMAL}   {acum = acum + atoi(yytext); printf("El valor acumulado es %d\n", acum);}
-{CEOCTAL}     {printf("La cadena %s representa una constante entera octal\n", yytext);}
+{CEDECIMAL}   {acumuladorDecimal += atoi(yytext); printf("Valor decimal: %s\n", yytext);}
+{CEOCTAL}     {int octalEnDecimal = valorOctalEnDecimal(yytext); printf("Constante octal: %s - Valor decimal = %d\n", yytext, octalEnDecimal);}
 {CEHEXA}      {printf("La cadena %s representa una constante entera hexadecimal\n", yytext);}
 {CREAL}       {printf("La cadena %s representa una constante real\n", yytext);}
-{PRESERVADA}  {printf("La cadena %s representa una palabra reservada\n", yytext);}
+{PRESERVADA}  {printf("Palabra reservada: %s\n", yytext);}
 {ID}          {printf("La cadena %s representa un identificador\n", yytext);}
 {COM}         {printf("La cadena %s representa un comentario\n", yytext);}
 {COMLINEA}    {printf("La cadena %s representa un comentario de linea\n", yytext);}
