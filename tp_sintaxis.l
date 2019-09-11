@@ -4,7 +4,7 @@
 
 int acumuladorDecimal = 0;
 
-
+t_nodo* listaDecimales, listaOctales, listaHexadecimales, listaReales, listaPalabrasReservadas, listaComentarios, listaIds, listaComentariosLinea, listaPuntuacion, listaOperadores;
 
 %}
 
@@ -21,24 +21,44 @@ OPERATORS	(\+\+|--|==|>=|<=|!=|<|>|!=|\+=|-=|\*=|\/=|%=|\+|-|\*|%|=|&&|\|\||!)
 PRESERVADA	while|do|if|else|for|int|char|return|case|switch|auto|break|const|continue|default|double|enum|extern|float|goto|long|register|short|signed|sizeof|static|struct|typedef|union|unsigned|void|volatile
 %%
 
-{CEDECIMAL}   {acumuladorDecimal += atoi(yytext); printf("Valor decimal: %s\n", yytext);}
-{CEOCTAL}     {int octalEnDecimal = valorOctalEnDecimal(yytext); printf("Constante octal: %s - Valor decimal = %d\n", yytext, octalEnDecimal);}
-{CEHEXA}      {printf("La cadena %s representa una constante entera hexadecimal\n", yytext);}
-{CREAL}       {printf("La cadena %s representa una constante real\n", yytext);}
-{PRESERVADA}  {printf("Palabra reservada: %s\n", yytext);}
-{ID}          {printf("La cadena %s representa un identificador\n", yytext);}
-{COM}         {printf("La cadena %s representa un comentario\n", yytext);}
-{COMLINEA}    {printf("La cadena %s representa un comentario de linea\n", yytext);}
-{PUNT}        {printf("La cadena %s representa un caracter de puntuacion\n", yytext);}
-{LIT}         {printf("La cadena %s representa un literal cadena\n", yytext);}
-{OPERATORS}   {printf("La cadena %s representa un operador\n", yytext);}
+{CEDECIMAL}   {acumuladorDecimal += atoi(yytext); agregarNodoAlFinal(yytext, listaDecimales);}
+{CEOCTAL}     {int octalEnDecimal = valorOctalADecimal(yytext); agregarNodoAlFinal(yytext, listaOctales);}
+{CEHEXA}      {agregarNodoAlFinal(yytext, listaHexadecimales);}
+{CREAL}       {agregarNodoAlFinal(yytext, listaReales);}
+{PRESERVADA}  {agregarNodoAlFinal(yytext, listaPalabrasReservadas);}
+{ID}          {agregarNodoAlFinal(yytext, listaIds);}
+{COM}         {agregarNodoAlFinal(yytext, listaComentarios);}
+{COMLINEA}    {agregarNodoAlFinal(yytext, listaComentariosLinea);}
+{PUNT}        {agregarNodoAlFinal(yytext, listaPuntuacion);}
+{LIT}         {agregarNodoAlFinal(yytext, listaLiterales);}
+{OPERATORS}   {agregarNodoAlFinal(yytext, listaOperadores);}
 [ \t\n]+          /* se come los espacios en blanco */
 
 %%
 
+void inicializarListas(){
+        listaDecimales = listaOctales = listaHexadecimales = listaReales = listaPalabrasReservadas, listaIds, listaComentarios, listaComentariosLinea, listaPuntuacion, listaLiterales, listaOperadores = NULL;
+}
+
+void printTodasLasListas(){
+    printListaAlFinalDeArchivo(listaDecimales, "Decimales", "salida.txt");
+    printListaAlFinalDeArchivo(listaOctales, "Octales", "salida.txt");
+    printListaAlFinalDeArchivo(listaHexadecimales, "Hexadecimales", "salida.txt");
+    printListaAlFinalDeArchivo(listaReales, "Reales", "salida.txt");
+    printListaAlFinalDeArchivo(listaPalabrasReservadas, "Palabras reservadas", "salida.txt");
+    printListaEnArchivoConRepetidos(listaIds, "Identificadores", "salida.txt");
+    printListaEnArchivoConRepetidos(listaPuntuacion, "Carácteres de puntuación", "salida.txt");
+    printListaEnArchivoConRepetidos(listaOperadores, "Operadores", "salida.txt");
+}
+
 int main(){
-    yyout = fopen("salida.txt","w");
+
+    inicializarListas();
+
     yyin = fopen("entrada.txt","r");
     yylex();
+
+    printTodasLasListas();
+
     return 0;
 }

@@ -7,12 +7,32 @@ char* string_substring(char* text, int start, int length) {
 	return new_string;
 }
 
-t_nodo* agregarNodo(char* valor, t_nodo* lista){
+int obtenerMantisa(double valorConComa){
+    int valorEntero = (int)valorConComa;
+    double soloValorConComa = valorConComa - valorEntero;
+
+    char* valorEnString = malloc(15);
+    gcvt(soloValorConComa, 10, valorEnString);
+    char* mantisaEnString = string_substring(valorEnString, 2, strlen(valorEnString));
+    int valorMantisa = atoi(mantisaEnString);
+    free(valorEnString);
+    free(mantisaEnString);
+
+    return valorMantisa;
+}
+
+int obtenerParteEntera(double valorConComa){
+    int valorEntero = (int)valorConComa;
+    return valorEntero;
+}
+
+t_nodo* agregarNodoAlFinal(char* valor, t_nodo* lista){
 
     t_nodo* nuevoNodo = (t_nodo*)malloc(sizeof(t_nodo));
 
     nuevoNodo->valor = strdup(valor);
     nuevoNodo->siguiente = NULL;
+    nuevoNodo->fueContado = false;
 
     if(lista == NULL) {
     	lista = nuevoNodo;
@@ -27,9 +47,20 @@ t_nodo* agregarNodo(char* valor, t_nodo* lista){
 
     nuevoNodo->siguiente = aux->siguiente;
     aux->siguiente = nuevoNodo;
-    return nuevoNodo;
+    return lista;
 
 
+}
+
+void imprimirValoresDeLista(t_nodo* lista){
+
+    int i = 1;
+
+    while(lista != NULL){
+        printf("%d: %s\n", i, lista->valor);
+        lista = lista->siguiente;
+        i++;
+    }
 }
 
 int valorOctalADecimal(char* octalTexto){
@@ -51,12 +82,144 @@ int valorOctalADecimal(char* octalTexto){
 	return valorDecimal;
 }
 
-int main(){
+int hexadecimalADecimal(char* hexa){
+    int decimal = 0;
+    int i = 0, valor, len;
+    len = strlen(hexa);
+    len--;
+    
+    for(i=0; hexa[i]!='\0'; i++){  
+        if(hexa[i]>='0' && hexa[i]<='9'){
+                valor = hexa[i] - 48;
+            }
+            else if(hexa[i]>='a' && hexa[i]<='f'){
+                valor = hexa[i] - 97 + 10;
+            }
+            else if(hexa[i]>='A' && hexa[i]<='F'){
+                valor = hexa[i] - 65 + 10;
+            }
+            decimal += valor * pow(16, len);
+            len--;
+        }
 
-    t_nodo* listaPrueba = NULL;
-    char* string = strdup("hola");
-    listaPrueba = agregarNodo(string, listaPrueba);
-    printf("%s\n", listaPrueba->valor);
-    return 0;
+    return decimal;
+}
+
+void printListaAlFinalDeArchivo(t_nodo* lista, char* tituloLista, char* nombreArchivo){
+
+    FILE* archivo = fopen(nombreArchivo, "a");
+
+    int i = 1;
+
+    if(archivo != NULL){
+
+        fprintf(archivo, "%s: \n", tituloLista);
+
+        while(lista != NULL){
+            fprintf(archivo, "\t%d) %s\n", i, lista->valor);
+            i++;
+            lista = lista->siguiente;
+        }
+    }
+
+    fclose(archivo);
+
 
 }
+
+void printListaEnArchivoConRepetidos(t_nodo* lista, char* tituloLista, char* nombreArchivo){
+
+    FILE* archivo = fopen(nombreArchivo, "a");
+
+    int i = 1;
+
+    if(archivo != NULL){
+
+        fprintf(archivo, "%s: \n", tituloLista);
+
+        while(lista != NULL){
+
+                if(!(lista->fueContado)){
+                t_nodo* child = lista->siguiente;
+                int numeroRepeticiones = 1;
+                while(child != NULL){
+                    if(strcmp(lista->valor, child->valor) == 0 && !(child->fueContado)) {
+                        numeroRepeticiones++;
+                        child->fueContado = true;
+                    }
+
+                    child = child->siguiente;
+            
+                }
+                fprintf(archivo, "\t%d) %s - %d repeticiones\n", i, lista->valor, numeroRepeticiones);
+            }
+            lista->fueContado = true;
+            lista = lista->siguiente;
+        }
+    }
+
+    fclose(archivo);
+
+}
+
+int largoLista(t_nodo* lista){
+
+    int i = 0;
+
+    while(lista != NULL){
+        i++;
+        lista = lista->siguiente;
+    }
+
+    return i;
+}
+
+t_nodo* mapLista(t_nodo* lista, void (*funcionAAplicar) (t_nodo*)){
+
+    t_nodo* aux = lista;
+
+    while(aux != NULL){
+
+        funcionAAplicar(aux);
+
+        aux = aux->siguiente;
+    }    
+
+    return lista;
+}
+
+void liberarLista(t_nodo* lista){
+
+    t_nodo* aux;
+
+    while(lista != NULL){
+        
+        aux = lista;
+        lista = lista->siguiente;
+
+        free(aux->valor);
+        free(aux);
+    }
+
+}
+
+/*int main(){
+
+    t_nodo* lista = NULL;
+
+    lista = agregarNodoAlFinal("hola", lista);
+    lista = agregarNodoAlFinal("hola", lista);
+    lista = agregarNodoAlFinal("hola", lista);
+    lista = agregarNodoAlFinal("hola", lista);
+    lista = agregarNodoAlFinal("hola", lista);
+    lista = agregarNodoAlFinal("tu hermana", lista);
+    lista = agregarNodoAlFinal("tu hermana", lista);
+    lista = agregarNodoAlFinal("pato el pez", lista);
+
+    printListaEnArchivoConRepetidos(lista, "Tu vieja", "tuvieja.txt");
+    imprimirValoresDeLista(lista);
+
+    liberarLista(lista);
+
+    return 0;
+}*/
