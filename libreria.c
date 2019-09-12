@@ -174,7 +174,7 @@ int largoLista(t_nodo* lista){
     return i;
 }
 
-t_nodo* mapLista(t_nodo* lista, void (*funcionAAplicar) (t_nodo*)){
+t_nodo* mapLista(t_nodo* lista, void funcionAAplicar(t_nodo*)){
 
     t_nodo* aux = lista;
 

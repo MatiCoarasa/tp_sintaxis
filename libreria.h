@@ -21,6 +21,6 @@ void imprimirValoresDeLista(t_nodo* lista);
 int hexadecimalADecimal(char* hexa);
 void printListaAlFinalDeArchivo(t_nodo* lista, char* tipoLista, char* nombreArchivo);
 void liberarLista(t_nodo* lista);
-t_nodo* mapLista(t_nodo* lista, void(func)(char*));
+t_nodo* mapLista(t_nodo* lista, void func(t_nodo*));
 int largoLista(t_nodo* lista);
 void printListaEnArchivoConRepetidos(t_nodo* lista, char* tituloLista, char* nombreArchivo);
