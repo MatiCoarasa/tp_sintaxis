@@ -27,3 +27,5 @@ void printListaEnArchivoConRepetidos(t_nodo* lista, char* tituloLista, char* nom
 void reporteDeLiteralCadena(t_nodo* unNodo);
 void reporteDeOctal(t_nodo* unNodo);
 void reporteDeHexa(t_nodo* unNodo);
+void reporteDecimal(t_nodo* unNodo);
+int sumaDecimal(t_nodo* lista);

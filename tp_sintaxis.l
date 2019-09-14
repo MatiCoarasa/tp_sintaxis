@@ -41,6 +41,7 @@ void inicializarListas(){
 }
 
 void printTodasLasListas(){
+    mapLista(listaDecimales,(void*)reporteDecimal);
     printListaAlFinalDeArchivo(listaDecimales, "Decimales", "salida.txt");
 	mapLista(listaOctales,(void*)reporteDeOctal);
     printListaAlFinalDeArchivo(listaOctales, "Octales", "salida.txt");
