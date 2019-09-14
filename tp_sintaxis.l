@@ -4,8 +4,8 @@
 
 int acumuladorDecimal = 0;
 
-t_nodo* listaDecimales, listaHexadecimales, listaReales, listaPalabrasReservadas, listaComentarios, listaIds, listaComentariosLinea, listaPuntuacion, listaOperadores;
-t_nodo* listaOctales;
+t_nodo* listaDecimales,*listaOctales, *listaHexadecimales, *listaReales, *listaPalabrasReservadas, *listaComentarios, *listaIds, *listaComentariosLinea, *listaPuntuacion, *listaOperadores,*listaLiterales;
+
 %}
 
 CEDECIMAL 	[1-9][0-9]*
@@ -21,17 +21,17 @@ OPERATORS	(\+\+|--|==|>=|<=|!=|<|>|!=|\+=|-=|\*=|\/=|%=|\+|-|\*|%|=|&&|\|\||!)
 PRESERVADA	while|do|if|else|for|int|char|return|case|switch|auto|break|const|continue|default|double|enum|extern|float|goto|long|register|short|signed|sizeof|static|struct|typedef|union|unsigned|void|volatile
 %%
 
-{CEDECIMAL}   {acumuladorDecimal += atoi(yytext); agregarNodoAlFinal(yytext, listaDecimales);}
-{CEOCTAL}     {int octalEnDecimal = valorOctalADecimal(yytext); agregarNodoAlFinal(yytext, listaOctales);}
-{CEHEXA}      {agregarNodoAlFinal(yytext, listaHexadecimales);}
-{CREAL}       {agregarNodoAlFinal(yytext, listaReales);}
-{PRESERVADA}  {agregarNodoAlFinal(yytext, listaPalabrasReservadas);}
-{ID}          {agregarNodoAlFinal(yytext, listaIds);}
-{COM}         {agregarNodoAlFinal(yytext, listaComentarios);}
-{COMLINEA}    {agregarNodoAlFinal(yytext, listaComentariosLinea);}
-{PUNT}        {agregarNodoAlFinal(yytext, listaPuntuacion);}
-{LIT}         {agregarNodoAlFinal(yytext, listaLiterales);}
-{OPERATORS}   {agregarNodoAlFinal(yytext, listaOperadores);}
+{CEDECIMAL}   {acumuladorDecimal += atoi(yytext); listaDecimales = agregarNodoAlFinal(yytext, listaDecimales);}
+{CEOCTAL}     {int octalEnDecimal = valorOctalADecimal(yytext); listaOctales = agregarNodoAlFinal(yytext, listaOctales);}
+{CEHEXA}      {listaHexadecimales = agregarNodoAlFinal(yytext, listaHexadecimales);}
+{CREAL}       {listaReales = agregarNodoAlFinal(yytext, listaReales);}
+{PRESERVADA}  {listaPalabrasReservadas = agregarNodoAlFinal(yytext, listaPalabrasReservadas);}
+{ID}          {listaIds = agregarNodoAlFinal(yytext, listaIds);}
+{COM}         {listaComentarios = agregarNodoAlFinal(yytext, listaComentarios);}
+{COMLINEA}    {listaComentariosLinea = agregarNodoAlFinal(yytext, listaComentariosLinea);}
+{PUNT}        {listaPuntuacion = agregarNodoAlFinal(yytext, listaPuntuacion);}
+{LIT}         {listaLiterales = agregarNodoAlFinal(yytext, listaLiterales);}
+{OPERATORS}   {listaOperadores = agregarNodoAlFinal(yytext, listaOperadores);}
 [ \t\n]+          /* se come los espacios en blanco */
 
 %%
