@@ -208,33 +208,6 @@ void liberarLista(t_nodo* lista){
 
 }
 
- void reporteDecimal(t_nodo* unNodo){
-    int* decimal = strdup(unNodo->valor);
-    int valorDecimal = sumaDecimal(decimal)
-    char* valorDecimalEnString[12];
-    sprintf(valorDecimalEnString, "%d", valorDecimal);
-
-    string_append(&valorDecimal,": Valor decimal ");
-    string_append(&valorDecimal,valorDecimalEnString);
-
-    unNodo->valor=valorDecimal;
-
-    //free(valorDecimalEnString);
-    //free(unNodo->valor);
-    
-}
- int sumaDecimal(t_nodo* lista){
-    
-     int sumaDecimal=0;
-    
-    while(lista!=NULL){
-        sumaDecimal=sumaDecimal+lista->nro;
-        lista=lista->sgte;
- }
-
- return sumaDecimal;
- 
-}
 void reporteDeLiteralCadena(t_nodo* unNodo){
     char* literalCadena = strdup(unNodo->valor);
     int longitudDeCadena = strlen(literalCadena)-2; // "-2" por las comillas

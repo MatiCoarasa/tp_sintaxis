@@ -41,7 +41,6 @@ void inicializarListas(){
 }
 
 void printTodasLasListas(){
-    mapLista(listaDecimales,(void*)reporteDecimal);
     printListaAlFinalDeArchivo(listaDecimales, "Decimales", "salida.txt");
 	mapLista(listaOctales,(void*)reporteDeOctal);
     printListaAlFinalDeArchivo(listaOctales, "Octales", "salida.txt");
@@ -64,6 +63,8 @@ int main(){
     yylex();
 
     printTodasLasListas();
+
+    printf ("La suma de Decimales es %d",acumuladorDecimal);
 
     return 0;
 }
