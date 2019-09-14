@@ -7,6 +7,11 @@ char* string_substring(char* text, int start, int length) {
 	return new_string;
 }
 
+void string_append(char** original, char* string_to_add) {
+	*original = realloc(*original, strlen(*original) + strlen(string_to_add) + 1);
+	strcat(*original, string_to_add);
+}
+
 int obtenerMantisa(double valorConComa){
     int valorEntero = (int)valorConComa;
     double soloValorConComa = valorConComa - valorEntero;
@@ -87,8 +92,8 @@ int hexadecimalADecimal(char* hexa){
     int i = 0, valor, len;
     len = strlen(hexa);
     len--;
-    
-    for(i=0; hexa[i]!='\0'; i++){  
+
+    for(i=0; hexa[i]!='\0'; i++){
         if(hexa[i]>='0' && hexa[i]<='9'){
                 valor = hexa[i] - 48;
             }
@@ -149,7 +154,7 @@ void printListaEnArchivoConRepetidos(t_nodo* lista, char* tituloLista, char* nom
                     }
 
                     child = child->siguiente;
-            
+
                 }
                 fprintf(archivo, "\t%d) %s - %d repeticiones\n", i, lista->valor, numeroRepeticiones);
             }
@@ -183,7 +188,7 @@ t_nodo* mapLista(t_nodo* lista, void funcionAAplicar(t_nodo*)){
         funcionAAplicar(aux);
 
         aux = aux->siguiente;
-    }    
+    }
 
     return lista;
 }
@@ -193,7 +198,7 @@ void liberarLista(t_nodo* lista){
     t_nodo* aux;
 
     while(lista != NULL){
-        
+
         aux = lista;
         lista = lista->siguiente;
 
@@ -203,6 +208,51 @@ void liberarLista(t_nodo* lista){
 
 }
 
+void reporteDeLiteralCadena(t_nodo* unNodo){
+    char* literalCadena = strdup(unNodo->valor);
+    int longitudDeCadena = strlen(literalCadena)-2; // "-2" por las comillas
+    char* longitudDeCadenaEnString[12];
+    sprintf(longitudDeCadenaEnString, "%d", longitudDeCadena);
+
+    string_append(&literalCadena,": Longitud ");
+    string_append(&literalCadena,longitudDeCadenaEnString);
+
+    unNodo->valor = literalCadena;
+
+    //free(longitudDeCadenaEnString);
+    //free(unNodo->valor);
+
+}
+
+void reporteDeOctal(t_nodo* unNodo){
+    char* valorOctal = strdup(unNodo->valor);
+    int valorDecimal = valorOctalADecimal(valorOctal);
+    char* valorDecimalEnString[12];
+    sprintf(valorDecimalEnString, "%d", valorDecimal);
+
+    string_append(&valorOctal,": Valor decimal ");
+    string_append(&valorOctal,valorDecimalEnString);
+
+    unNodo->valor=valorOctal;
+
+    //free(valorDecimalEnString);
+    //free(unNodo->valor);
+}
+
+void reporteDeHexa(t_nodo* unNodo){
+    char* valorHexa = strdup(unNodo->valor);
+    int valorDecimal = hexadecimalADecimal(valorHexa);
+    char* valorDecimalEnString[12];
+    sprintf(valorDecimalEnString, "%d", valorDecimal);
+
+    string_append(&valorHexa,": Valor decimal ");
+    string_append(&valorHexa,valorDecimalEnString);
+
+    unNodo->valor=valorHexa;
+
+    //free(valorDecimalEnString);
+    //free(unNodo->valor);
+}
 /*int main(){
 
     t_nodo* lista = NULL;

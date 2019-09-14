@@ -4,8 +4,8 @@
 
 int acumuladorDecimal = 0;
 
-t_nodo* listaDecimales, listaOctales, listaHexadecimales, listaReales, listaPalabrasReservadas, listaComentarios, listaIds, listaComentariosLinea, listaPuntuacion, listaOperadores;
-
+t_nodo* listaDecimales, listaHexadecimales, listaReales, listaPalabrasReservadas, listaComentarios, listaIds, listaComentariosLinea, listaPuntuacion, listaOperadores;
+t_nodo* listaOctales;
 %}
 
 CEDECIMAL 	[1-9][0-9]*
@@ -42,10 +42,14 @@ void inicializarListas(){
 
 void printTodasLasListas(){
     printListaAlFinalDeArchivo(listaDecimales, "Decimales", "salida.txt");
+	mapLista(listaOctales,(void*)reporteDeOctal);
     printListaAlFinalDeArchivo(listaOctales, "Octales", "salida.txt");
+	mapLista(listaHexadecimales,(void*)reporteDeHexa);
     printListaAlFinalDeArchivo(listaHexadecimales, "Hexadecimales", "salida.txt");
     printListaAlFinalDeArchivo(listaReales, "Reales", "salida.txt");
     printListaAlFinalDeArchivo(listaPalabrasReservadas, "Palabras reservadas", "salida.txt");
+	mapLista(listaLiterales,(void*)reporteDeLiteralCadena);
+	printListaAlFinalDeArchivo(listaLiterales, "Literales cadena", "salida.txt");
     printListaEnArchivoConRepetidos(listaIds, "Identificadores", "salida.txt");
     printListaEnArchivoConRepetidos(listaPuntuacion, "Carácteres de puntuación", "salida.txt");
     printListaEnArchivoConRepetidos(listaOperadores, "Operadores", "salida.txt");
