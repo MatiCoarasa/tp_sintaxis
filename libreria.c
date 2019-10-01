@@ -253,6 +253,19 @@ void reporteDeHexa(t_nodo* unNodo){
     //free(valorDecimalEnString);
     //free(unNodo->valor);
 }
+void reporteDeRechazados(t_nodo* unNodo){
+    char* valorRechazado = strdup(unNodo->valor);
+    char* valorEnString[12];
+    sprintf(valorEnString, "%d", valorRechazado);
+
+    string_append(&valorRechazado,": Valor rechazado ");
+    string_append(&valorRechazado,valorEnString);
+
+    unNodo->valor=valorRechazado;
+
+    //free(valorEnString);
+    //free(unNodo->valor);
+}
 /*int main(){
 
     t_nodo* lista = NULL;

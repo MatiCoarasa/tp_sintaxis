@@ -1,3 +1,4 @@
+%option yylineno
 %{
 
 #include "libreria.h"
@@ -21,6 +22,13 @@ OPERATORS	(\+\+|--|==|>=|<=|!=|<|>|!=|\+=|-=|\*=|\/=|%=|\+|-|\*|%|=|&&|\|\||!)
 PRESERVADA	while|do|if|else|for|int|char|return|case|switch|auto|break|const|continue|default|double|enum|extern|float|goto|long|register|short|signed|sizeof|static|struct|typedef|union|unsigned|void|volatile
 %%
 
+programa {return PROGRAMA;}
+variables {return VARIABLES;}
+definir {return DEFINIR;}
+codigo {return CODIGO;}
+leer {return LEER;}
+escribir {return ESCRIBIR;}
+fin {return FIN;}
 {CEDECIMAL}   {acumuladorDecimal += atoi(yytext); listaDecimales = agregarNodoAlFinal(yytext, listaDecimales);}
 {CEOCTAL}     {int octalEnDecimal = valorOctalADecimal(yytext); listaOctales = agregarNodoAlFinal(yytext, listaOctales);}
 {CEHEXA}      {listaHexadecimales = agregarNodoAlFinal(yytext, listaHexadecimales);}
@@ -33,11 +41,12 @@ PRESERVADA	while|do|if|else|for|int|char|return|case|switch|auto|break|const|con
 {LIT}         {listaLiterales = agregarNodoAlFinal(yytext, listaLiterales);}
 {OPERATORS}   {listaOperadores = agregarNodoAlFinal(yytext, listaOperadores);}
 [ \t\n]+          /* se come los espacios en blanco */
+(.)           {listaDeRechazo = agregarNodoAlFinal(yytext,listaDeRechazo);}
 
 %%
 
 void inicializarListas(){
-        listaDecimales = listaOctales = listaHexadecimales = listaReales = listaPalabrasReservadas, listaIds, listaComentarios, listaComentariosLinea, listaPuntuacion, listaLiterales, listaOperadores = NULL;
+        listaDecimales = listaOctales = listaHexadecimales = listaReales = listaPalabrasReservadas, listaIds, listaComentarios, listaComentariosLinea, listaPuntuacion, listaDeRechazo, listaLiterales, listaOperadores = NULL;
 }
 
 void printTodasLasListas(){
@@ -53,6 +62,8 @@ void printTodasLasListas(){
     printListaEnArchivoConRepetidos(listaIds, "Identificadores", "salida.txt");
     printListaEnArchivoConRepetidos(listaPuntuacion, "Carácteres de puntuación", "salida.txt");
     printListaEnArchivoConRepetidos(listaOperadores, "Operadores", "salida.txt");
+    mapLista(listaDeRechazo,(void*)reporteDeRechazados);    
+    printListaEnArchivoConRepetidos(listaDeRechazo,"Caracteres Rechazados","salida.txt");
 }
 
 int main(){
