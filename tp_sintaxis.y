@@ -1,9 +1,10 @@
 %{
 #include <stdio.h>
 #include "libreria.h"
+extern FILE *yyin;
 %}
 
-%token ID CDECIMAL CHEXA CREAL COCTAL ASIGNACION
+%token ID CDECIMAL CHEXA CREAL COCTAL
 
 %%
 

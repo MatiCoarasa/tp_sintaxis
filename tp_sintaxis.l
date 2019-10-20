@@ -1,12 +1,9 @@
-%option yylineno
 %{
 
 #include "libreria.h"
+#include "tp_sintaxis.tab.h"
 
-int acumuladorDecimal = 0;
-
-t_nodo* listaDecimales,*listaOctales, *listaHexadecimales, *listaReales, *listaPalabrasReservadas, *listaComentarios, *listaIds, *listaComentariosLinea, *listaPuntuacion, *listaOperadores,*listaLiterales;
-
+t_nodo* listaDeRechazo;
 %}
 
 CEDECIMAL 	[1-9][0-9]*
@@ -21,61 +18,40 @@ PUNT		[-\\(-~]|\\[0ntvafbr]
 OPERATORS	(\+\+|--|==|>=|<=|!=|<|>|!=|\+=|-=|\*=|\/=|%=|\+|-|\*|%|=|&&|\|\||!)
 PRESERVADA	while|do|if|else|for|int|char|return|case|switch|auto|break|const|continue|default|double|enum|extern|float|goto|long|register|short|signed|sizeof|static|struct|typedef|union|unsigned|void|volatile
 %%
-
-programa {return PROGRAMA;}
-variables {return VARIABLES;}
-definir {return DEFINIR;}
-codigo {return CODIGO;}
-leer {return LEER;}
-escribir {return ESCRIBIR;}
-fin {return FIN;}
-{CEDECIMAL}   {acumuladorDecimal += atoi(yytext); listaDecimales = agregarNodoAlFinal(yytext, listaDecimales);}
-{CEOCTAL}     {int octalEnDecimal = valorOctalADecimal(yytext); listaOctales = agregarNodoAlFinal(yytext, listaOctales);}
-{CEHEXA}      {listaHexadecimales = agregarNodoAlFinal(yytext, listaHexadecimales);}
-{CREAL}       {listaReales = agregarNodoAlFinal(yytext, listaReales);}
-{PRESERVADA}  {listaPalabrasReservadas = agregarNodoAlFinal(yytext, listaPalabrasReservadas);}
-{ID}          {listaIds = agregarNodoAlFinal(yytext, listaIds);}
-{COM}         {listaComentarios = agregarNodoAlFinal(yytext, listaComentarios);}
-{COMLINEA}    {listaComentariosLinea = agregarNodoAlFinal(yytext, listaComentariosLinea);}
-{PUNT}        {listaPuntuacion = agregarNodoAlFinal(yytext, listaPuntuacion);}
-{LIT}         {listaLiterales = agregarNodoAlFinal(yytext, listaLiterales);}
-{OPERATORS}   {listaOperadores = agregarNodoAlFinal(yytext, listaOperadores);}
+{CEDECIMAL}   {}
+{CEOCTAL}     {}
+{CEHEXA}      {}
+{CREAL}       {}
+{PRESERVADA}  {}
+{ID}          {}
+{COM}         {}
+{COMLINEA}    {}
+{PUNT}        {}
+{LIT}         {}
+{OPERATORS}   {}
 [ \t\n]+          /* se come los espacios en blanco */
 (.)           {listaDeRechazo = agregarNodoAlFinal(yytext,listaDeRechazo);}
 
 %%
 
 void inicializarListas(){
-        listaDecimales = listaOctales = listaHexadecimales = listaReales = listaPalabrasReservadas, listaIds, listaComentarios, listaComentariosLinea, listaPuntuacion, listaDeRechazo, listaLiterales, listaOperadores = NULL;
+        listaDeRechazo = NULL;
 }
 
-void printTodasLasListas(){
-    printListaAlFinalDeArchivo(listaDecimales, "Decimales", "salida.txt");
-	mapLista(listaOctales,(void*)reporteDeOctal);
-    printListaAlFinalDeArchivo(listaOctales, "Octales", "salida.txt");
-	mapLista(listaHexadecimales,(void*)reporteDeHexa);
-    printListaAlFinalDeArchivo(listaHexadecimales, "Hexadecimales", "salida.txt");
-    printListaAlFinalDeArchivo(listaReales, "Reales", "salida.txt");
-    printListaAlFinalDeArchivo(listaPalabrasReservadas, "Palabras reservadas", "salida.txt");
-	mapLista(listaLiterales,(void*)reporteDeLiteralCadena);
-	printListaAlFinalDeArchivo(listaLiterales, "Literales cadena", "salida.txt");
-    printListaEnArchivoConRepetidos(listaIds, "Identificadores", "salida.txt");
-    printListaEnArchivoConRepetidos(listaPuntuacion, "Carácteres de puntuación", "salida.txt");
-    printListaEnArchivoConRepetidos(listaOperadores, "Operadores", "salida.txt");
-    mapLista(listaDeRechazo,(void*)reporteDeRechazados);    
-    printListaEnArchivoConRepetidos(listaDeRechazo,"Caracteres Rechazados","salida.txt");
+void printearRechazados(){
+    mapLista(listaDeRechazo,(void*)reporteDeRechazados);
+	printf("--RECHAZADOS--\n\n");
+    printLista(listaDeRechazo);
 }
 
-int main(){
+int mainVIEJO(){
 
     inicializarListas();
 
     yyin = fopen("entrada.txt","r");
     yylex();
 
-    printTodasLasListas();
-
-    printf ("La suma de Decimales es %d",acumuladorDecimal);
+    printearRechazados();
 
     return 0;
 }

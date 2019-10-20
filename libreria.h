@@ -14,17 +14,9 @@ typedef struct t_nodo {
 
 t_nodo* agregarNodoAlFinal(char* valor, t_nodo* lista);
 char* string_substring(char* text, int start, int length);
-int valorOctalADecimal(char* octalTexto);
-int obtenerParteEntera(double valorConComa);
-int obtenerMantisa(double valorConComa);
-void imprimirValoresDeLista(t_nodo* lista);
-int hexadecimalADecimal(char* hexa);
-void printListaAlFinalDeArchivo(t_nodo* lista, char* tipoLista, char* nombreArchivo);
+void string_append(char** original, char* string_to_add);
+void printLista(t_nodo* lista);
 void liberarLista(t_nodo* lista);
-t_nodo* mapLista(t_nodo* lista, void func(t_nodo*));
+void mapLista(t_nodo* lista, void func(t_nodo*));
 int largoLista(t_nodo* lista);
-void printListaEnArchivoConRepetidos(t_nodo* lista, char* tituloLista, char* nombreArchivo);
-void reporteDeLiteralCadena(t_nodo* unNodo);
-void reporteDeOctal(t_nodo* unNodo);
-void reporteDeHexa(t_nodo* unNodo);
-void reporteDeRechazo(t_nodo* unNodo);
+void reporteDeRechazados(t_nodo* unNodo);
