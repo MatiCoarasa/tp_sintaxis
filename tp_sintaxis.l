@@ -11,47 +11,30 @@ CEOCTAL		0[0-7]*
 CEHEXA		0[xX][A-Fa-f0-9]+
 CREAL	    [0-9]*"."[0-9]+([eE]([\+\-]?)[0-9]+)?
 ID       	[a-zA-Z_][a-zA-Z0-9_]*
-COMLINEA    \/\/(.)*
-COM 		\/\*([^*]|[\r\n])*\*\/
 LIT  		\".*\"
-PUNT		[-\\(-~]|\\[0ntvafbr]
-OPERATORS	(\+\+|--|==|>=|<=|!=|<|>|!=|\+=|-=|\*=|\/=|%=|\+|-|\*|%|=|&&|\|\||!)
-PRESERVADA	while|do|if|else|for|int|char|return|case|switch|auto|break|const|continue|default|double|enum|extern|float|goto|long|register|short|signed|sizeof|static|struct|typedef|union|unsigned|void|volatile
+TIPO		int|char|double|float|long|short|signed|unsigned|void
+INCREMENTO	\+\+|--
+RELACIONAL 	>=|<=|<|>
+IGUALDAD	==|!=
+ASIGNACION 	\+|\+=
+OPERADORES	\+|-|\*|&|\/|%|!|,|\(|\)|\[|\] 
 %%
-{CEDECIMAL}   {}
-{CEOCTAL}     {}
-{CEHEXA}      {}
-{CREAL}       {}
-{PRESERVADA}  {}
-{ID}          {}
-{COM}         {}
-{COMLINEA}    {}
-{PUNT}        {}
-{LIT}         {}
-{OPERATORS}   {}
-[ \t\n]+          /* se come los espacios en blanco */
-(.)           {listaDeRechazo = agregarNodoAlFinal(yytext,listaDeRechazo);}
+{TIPO} 		  				{return NOMBRETIPO;}
+sizeof		  				{return SIZEOF;}
+{CEDECIMAL}   				{return CONSTANTE;}
+{CEOCTAL}     				{return CONSTANTE;}
+{CEHEXA}      				{return CONSTANTE;}
+{CREAL}       				{return CONSTANTE;}
+{LIT}        				{return LITERALCADENA;}
+{INCREMENTO}	  			{return PREINCREMENTO;}
+{RELACIONAL}     			{return OPERADOR_RELACIONAL;}
+{IGUALDAD}	      			{return OPERADOR_IGUALDAD;}
+{ASIGNACION}		  		{return OPERADOR_ASIGNACION;}
+{OPERADORES}				{return yytext[0];} //Como el string es de un solo char, se devuelve el primer elemento del string, que es el operador (tal vez hay una forma mejor?)
+&&		   				    {return AND;}
+"||"		      			{return OR;}
+{ID}          				{return IDENTIFICADOR;}
+[ \t\n]+          			/* se come los espacios en blanco */
+(.)           				{listaDeRechazo = agregarNodoAlFinal(yytext,listaDeRechazo);}
 
 %%
-
-void inicializarListas(){
-        listaDeRechazo = NULL;
-}
-
-void printearRechazados(){
-    mapLista(listaDeRechazo,(void*)reporteDeRechazados);
-	printf("--RECHAZADOS--\n\n");
-    printLista(listaDeRechazo);
-}
-
-int mainVIEJO(){
-
-    inicializarListas();
-
-    yyin = fopen("entrada.txt","r");
-    yylex();
-
-    printearRechazados();
-
-    return 0;
-}
