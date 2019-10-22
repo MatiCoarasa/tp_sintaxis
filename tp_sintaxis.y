@@ -5,17 +5,17 @@ extern FILE *yyin;
 extern t_nodo* listaDeRechazo;
 %}
 
-%token CONSTANTE IDENTIFICADOR OPERADOR_RELACIONAL OPERADOR_IGUALDAD AND OR OPERADOR_ASIGNACION NOMBRETIPO SIZEOF PREINCREMENTO LITERALCADENA
+%token CONSTANTE IDENTIFICADOR OPERADOR_RELACIONAL OPERADOR_IGUALDAD AND OR OPERADOR_ASIGNACION NOMBRETIPO SIZEOF PREINCREMENTO LITERALCADENA RETURN ESTRUCTURAS 
 
 %%
-
+//Expresiones//
 expresion:	expAsignacion
 
 expAsignacion: expCondicional
 		| expUnaria OPERADOR_ASIGNACION expAsignacion
 				
 expCondicional: expOr
-		//| expOr ? expresion : expCondicional
+		| expOr '?' expresion ':' expCondicional
 
 expOr: expAnd
 		| expOr OR expAnd
@@ -59,6 +59,29 @@ expPrimaria: IDENTIFICADOR
 		| CONSTANTE
 		| LITERALCADENA
 		| '(' expresion ')'
+
+//Sentencias//
+sentencia: sentCompuesta sentExpresion sentSeleccion sentIteracion sentSalto
+
+sentCompuesta: '{'listaDeclaraciones listaSentencias'}'
+
+listaDeclaraciones: DECLARACION
+		| listaDeclaraciones DECLARACION
+
+listaSentencias: sentencia
+		| listaSentencias sentencia
+
+sentExpresion: expresion ';'
+
+sentSeleccion: if '('expresion')' sentencia
+		| if '('expresion')' sentencia else sentencia
+		| switch '('expresion')' sentencia
+
+sentIteracion: while '('expresion')' sentencia
+		| do SENTENCIA while '('expresion')'
+		| for '('expresion ';' expresion ';' expresion')' sentencia
+
+sentSalto: RETURN expresion ';'
 %%
 
 void inicializarListas(){

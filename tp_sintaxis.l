@@ -17,10 +17,13 @@ INCREMENTO	\+\+|--
 RELACIONAL 	>=|<=|<|>
 IGUALDAD	==|!=
 ASIGNACION 	\+|\+=
-OPERADORES	\+|-|\*|&|\/|%|!|,|\(|\)|\[|\] 
+OPERADORES	\+|-|\*|&|\/|%|!|,|\(|\)|\[|\]|\?|\:
+ESTRUCTURAS while|if|do|for|else
 %%
 {TIPO} 		  				{return NOMBRETIPO;}
 sizeof		  				{return SIZEOF;}
+return                      {return RETURN;}
+{ESTRUCTURAS}               {return ESTRUCTURAS;}
 {CEDECIMAL}   				{return CONSTANTE;}
 {CEOCTAL}     				{return CONSTANTE;}
 {CEHEXA}      				{return CONSTANTE;}
