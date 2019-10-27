@@ -12,7 +12,6 @@ void string_append(char** original, char* string_to_add) {
 	strcat(*original, string_to_add);
 }
 
-
 void reporteDeRechazados(t_nodo* unNodo){
     char* valorRechazado = strdup(unNodo->valor);
     char* valorEnString[12];
@@ -25,4 +24,8 @@ void reporteDeRechazados(t_nodo* unNodo){
 
     //free(valorEnString);
     //free(unNodo->valor);
+}
+
+void agregarVariableDeclarada(char* nombre, char* tipo){
+
 }

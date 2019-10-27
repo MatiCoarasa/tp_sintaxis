@@ -12,12 +12,12 @@ CEHEXA		0[xX][A-Fa-f0-9]+
 CREAL	    [0-9]*"."[0-9]+([eE]([\+\-]?)[0-9]+)?
 ID       	[a-zA-Z_][a-zA-Z0-9_]*
 LIT  		\".*\"
-TIPO		int|char|double|float|long|short|signed|unsigned|void
+TIPO		int|char|double|float|long|short|signed|unsigned|void //Estan bien los short signed y eso?
 INCREMENTO	\+\+|--
 RELACIONAL 	>=|<=|<|>
 IGUALDAD	==|!=
 ASIGNACION 	\+|\+=
-OPERADORES	\+|-|\*|&|\/|%|!|,|\(|\)|\[|\]|\?|\:
+OPERADORES	\+|-|\*|&|\/|%|!|,|\(|\)|\[|\]|\?|\:|\{|\}
 ESTRUCTURAS while|if|do|for|else
 %%
 {TIPO} 		  				{return NOMBRETIPO;}

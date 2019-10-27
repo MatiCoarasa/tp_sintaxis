@@ -5,9 +5,14 @@ extern FILE *yyin;
 extern t_nodo* listaDeRechazo;
 %}
 
-%token CONSTANTE IDENTIFICADOR OPERADOR_RELACIONAL OPERADOR_IGUALDAD AND OR OPERADOR_ASIGNACION NOMBRETIPO SIZEOF PREINCREMENTO LITERALCADENA RETURN ESTRUCTURAS 
-
+%token CONSTANTE IDENTIFICADOR OPERADOR_RELACIONAL OPERADOR_IGUALDAD AND OR OPERADOR_ASIGNACION NOMBRETIPO SIZEOF PREINCREMENTO LITERALCADENA RETURN FOR WHILE IF SWITCH DO ELSE
 %%
+
+codigo: expresion codigo //Algo asi?
+		| declaracion codigo
+		| sentencia codigo
+		| 
+
 //Expresiones//
 expresion:	expAsignacion
 
@@ -40,8 +45,8 @@ expMultiplicativa: expUnaria
 		
 expUnaria: expPostFijo
 		| PREINCREMENTO expUnaria
-		operUnario expUnaria
-		SIZEOF '('NOMBRETIPO')'
+		| operUnario expUnaria
+		| SIZEOF '('NOMBRETIPO')'
 
 operUnario: '&'
 		| '*'
@@ -59,28 +64,49 @@ expPrimaria: IDENTIFICADOR
 		| CONSTANTE
 		| LITERALCADENA
 		| '(' expresion ')'
+		
+// Declaraciones //
+
+declaracion: declaVarSimples
+
+declaVarSimples: NOMBRETIPO listaVarSimples ';'
+
+listaVarSimples: unaVarSimple
+		| listaVarSimples ',' unaVarSimple
+		
+unaVarSimple: variable inicial
+
+inicial: '=' CONSTANTE //Falta completar aca
+
+variable: IDENTIFICADOR
+		
 
 //Sentencias//
-sentencia: sentCompuesta sentExpresion sentSeleccion sentIteracion sentSalto
 
-sentCompuesta: '{'listaDeclaraciones listaSentencias'}'
+sentencia: sentCompuesta
+		| sentExpresion
+		| sentSeleccion
+		| sentIteracion
+		| sentSalto
 
-listaDeclaraciones: DECLARACION
-		| listaDeclaraciones DECLARACION
+sentCompuesta: '{' listaDeclaraciones listaSentencias '}'
+
+listaDeclaraciones: declaracion
+		| listaDeclaraciones declaracion
 
 listaSentencias: sentencia
 		| listaSentencias sentencia
 
 sentExpresion: expresion ';'
 
-sentSeleccion: if '('expresion')' sentencia
-		| if '('expresion')' sentencia else sentencia
-		| switch '('expresion')' sentencia
-
-sentIteracion: while '('expresion')' sentencia
-		| do SENTENCIA while '('expresion')'
-		| for '('expresion ';' expresion ';' expresion')' sentencia
-
+sentSeleccion: IF '(' expresion ')' sentencia
+		| IF '(' expresion ')' sentencia ELSE sentencia //Esto tira warning
+		| SWITCH '(' expresion ')' sentencia
+		
+sentIteracion: WHILE '(' expresion ')' sentencia
+		| DO sentencia WHILE '(' expresion ')' ';'
+		| FOR '(' expresion ';' expresion ';' expresion ')' sentencia //Que pasa con los tokens opcionales?
+		
 sentSalto: RETURN expresion ';'
 %%
 
