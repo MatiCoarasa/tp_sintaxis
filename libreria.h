@@ -5,23 +5,23 @@
 #include <stdbool.h>
 
 typedef unsigned int t_uint;
-t_nodo* variablesDeclaradas;
+
 
 typedef struct t_nodo {
     struct t_nodo* siguiente;
     bool fueContado;
-    char* valor; //Cambiar a void* ?
+    void* valor;
 } t_nodo;
 
-typedef struct variableDeclarada{
+typedef struct {
     char* nombreVariable;
     char* tipoVariable; //Tal vez se podria hacer por enums?
-}
+} t_variableDeclarada;
 
-t_nodo* agregarNodoAlFinal(char* valor, t_nodo* lista);
+t_nodo* agregarValorALista(char* valor, t_nodo* lista);
 char* string_substring(char* text, int start, int length);
 void string_append(char** original, char* string_to_add);
-void printLista(t_nodo* lista);
+void printListaDeStrings(t_nodo* lista);
 void liberarLista(t_nodo* lista);
 void mapLista(t_nodo* lista, void func(t_nodo*));
 int largoLista(t_nodo* lista);

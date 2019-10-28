@@ -25,7 +25,3 @@ void reporteDeRechazados(t_nodo* unNodo){
     //free(valorEnString);
     //free(unNodo->valor);
 }
-
-void agregarVariableDeclarada(char* nombre, char* tipo){
-
-}
