@@ -17,7 +17,7 @@ bool variableYaFueDeclarada(char* nombre, char* tipo)
 
     while(nodoDeLista != NULL)
     {
-        t_variableDeclarada* unaVariable = t_nodoDeLista->valor;
+        t_variableDeclarada* unaVariable = nodoDeLista->valor;
 
         if(!strcmp(nombre,unaVariable->nombreVariable) && !strcmp(tipo,unaVariable->tipoVariable)){
             return true;

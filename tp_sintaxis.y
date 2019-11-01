@@ -5,16 +5,19 @@ extern FILE *yyin;
 extern t_nodo* listaDeRechazo;
 %}
 
-%token CONSTANTE IDENTIFICADOR OPERADOR_RELACIONAL OPERADOR_IGUALDAD AND OR OPERADOR_ASIGNACION NOMBRETIPO SIZEOF PREINCREMENTO LITERALCADENA RETURN FOR WHILE IF SWITCH DO ELSE
+%token CONSTANTE IDENTIFICADOR OPERADOR_RELACIONAL OPERADOR_IGUALDAD AND OR OPERADOR_ASIGNACION NOMBRETIPO SIZEOF PREINCREMENTO LITERALCADENA RETURN FOR WHILE IF SWITCH DO ELSE OPERADOR_MULTIPLICATIVO
 %%
 
-codigo: expresion codigo //Algo asi?
-		| declaracion codigo
+codigo:	declaracion codigo
 		| sentencia codigo
-		| 
+		|
 
-//Expresiones//
+//Expresiones
+
 expresion:	expAsignacion
+
+expresionOpcional: expresion
+		|
 
 expAsignacion: expCondicional
 		| expUnaria OPERADOR_ASIGNACION expAsignacion
@@ -39,23 +42,29 @@ expAditiva: expMultiplicativa
 		| expAditiva '-' expMultiplicativa
 
 expMultiplicativa: expUnaria
-		| expMultiplicativa '*' expUnaria
-		| expMultiplicativa '/' expUnaria
-		| expMultiplicativa '%' expUnaria
+		| expMultiplicativa OPERADOR_MULTIPLICATIVO expUnaria
 		
 expUnaria: expPostFijo
-		| PREINCREMENTO expUnaria
+		| expUnaria PREINCREMENTO //En el libro esto estaba al revez. 
 		| operUnario expUnaria
 		| SIZEOF '('NOMBRETIPO')'
 
+operUnario: '-'
+		| '!'
+
+/* Contando punteros y direcciones. Si se quiere retomar esto hay que sacar el OPERADOR_MULTIPLICATIVO por la repeticion del '*'
 operUnario: '&'
 		| '*'
 		| '-'
 		| '!'
+*/
 		
 expPostFijo: expPrimaria
 		| expPostFijo '[' expresion ']'
-		| expPostFijo '(' listaArgumentos ')'
+		| expPostFijo '(' listaArgumentosOpcional ')'
+
+listaArgumentosOpcional: listaArgumentos
+		|
 
 listaArgumentos: expAsignacion
 		| listaArgumentos ',' expAsignacion
@@ -68,18 +77,33 @@ expPrimaria: IDENTIFICADOR
 // Declaraciones //
 
 declaracion: declaVarSimples
+		| declaFuncion
 
 declaVarSimples: NOMBRETIPO listaVarSimples ';'
 
 listaVarSimples: unaVarSimple
 		| listaVarSimples ',' unaVarSimple
 		
-unaVarSimple: variable inicial
-
-inicial: '=' CONSTANTE //Falta completar aca
+unaVarSimple: variable inicialOpcional
 
 variable: IDENTIFICADOR
+
+inicialOpcional: inicial
+		|
+
+inicial: '=' CONSTANTE
 		
+declaFuncion: NOMBRETIPO IDENTIFICADOR '(' listaParametrosOpcional ')' '{' codigo '}'
+
+listaParametrosOpcional: listaParametros
+		|
+
+listaParametros: unParametro
+		| listaParametros ',' unParametro
+
+unParametro: NOMBRETIPO unaVarSimple 
+		| NOMBRETIPO
+
 
 //Sentencias//
 
@@ -89,7 +113,13 @@ sentencia: sentCompuesta
 		| sentIteracion
 		| sentSalto
 
-sentCompuesta: '{' listaDeclaraciones listaSentencias '}'
+sentCompuesta: '{' listaDeclaracionesOpcional listaSentenciasOpcional '}'
+
+listaDeclaracionesOpcional: listaDeclaraciones
+		|
+
+listaSentenciasOpcional: listaSentencias
+		|
 
 listaDeclaraciones: declaracion
 		| listaDeclaraciones declaracion
@@ -97,17 +127,17 @@ listaDeclaraciones: declaracion
 listaSentencias: sentencia
 		| listaSentencias sentencia
 
-sentExpresion: expresion ';'
+sentExpresion: expresionOpcional ';'
 
 sentSeleccion: IF '(' expresion ')' sentencia
-		| IF '(' expresion ')' sentencia ELSE sentencia //Esto tira warning
+		| IF '(' expresion ')' sentencia ELSE sentencia
 		| SWITCH '(' expresion ')' sentencia
 		
 sentIteracion: WHILE '(' expresion ')' sentencia
 		| DO sentencia WHILE '(' expresion ')' ';'
-		| FOR '(' expresion ';' expresion ';' expresion ')' sentencia //Que pasa con los tokens opcionales?
+		| FOR '(' expresionOpcional ';' expresionOpcional ';' expresionOpcional ')' sentencia //Que pasa con los tokens opcionales?
 		
-sentSalto: RETURN expresion ';'
+sentSalto: RETURN expresionOpcional ';'
 %%
 
 void inicializarListas(){
@@ -117,7 +147,13 @@ void inicializarListas(){
 void printearRechazados(){
     mapLista(listaDeRechazo,(void*)reporteDeRechazados);
 	printf("--RECHAZADOS--\n\n");
-    printLista(listaDeRechazo);
+    //printLista(listaDeRechazo);
+}
+
+yyerror (s)  /* Llamada por yyparse ante un error */
+     char *s;
+{
+  printf ("%s\n", s);
 }
 
 main ()
@@ -126,7 +162,7 @@ main ()
   yyin = fopen("entrada.txt","r");
   yyparse ();
   
-  printearRechazados();
+  //printearRechazados();
   
   return 0;
 }

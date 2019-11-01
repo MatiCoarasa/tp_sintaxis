@@ -12,18 +12,24 @@ CEHEXA		0[xX][A-Fa-f0-9]+
 CREAL	    [0-9]*"."[0-9]+([eE]([\+\-]?)[0-9]+)?
 ID       	[a-zA-Z_][a-zA-Z0-9_]*
 LIT  		\".*\"
-TIPO		int|char|double|float|long|short|signed|unsigned|void //Estan bien los short signed y eso?
+TIPO		int|char|double|float
 INCREMENTO	\+\+|--
 RELACIONAL 	>=|<=|<|>
 IGUALDAD	==|!=
 ASIGNACION 	\+|\+=
-OPERADORES	\+|-|\*|&|\/|%|!|,|\(|\)|\[|\]|\?|\:|\{|\}
-ESTRUCTURAS while|if|do|for|else
+OPERADORES	\+|-|!|,|\?|\:|\=
+PARENTESIS \(|\)|\[|\]|\{|\}
+MULTIPLICATIVO \*|%|\/
 %%
 {TIPO} 		  				{return NOMBRETIPO;}
 sizeof		  				{return SIZEOF;}
 return                      {return RETURN;}
-{ESTRUCTURAS}               {return ESTRUCTURAS;}
+while                       {return WHILE;}
+if                          {return IF;}
+do                          {return DO;}
+for                         {return FOR;}
+else                        {return ELSE;}
+";"							{return ';';}
 {CEDECIMAL}   				{return CONSTANTE;}
 {CEOCTAL}     				{return CONSTANTE;}
 {CEHEXA}      				{return CONSTANTE;}
@@ -33,11 +39,12 @@ return                      {return RETURN;}
 {RELACIONAL}     			{return OPERADOR_RELACIONAL;}
 {IGUALDAD}	      			{return OPERADOR_IGUALDAD;}
 {ASIGNACION}		  		{return OPERADOR_ASIGNACION;}
-{OPERADORES}				{return yytext[0];} //Como el string es de un solo char, se devuelve el primer elemento del string, que es el operador (tal vez hay una forma mejor?)
+{OPERADORES}				{return yytext[0];} //Como el string es de un solo char, se devuelve el primer elemento del string, que es el operador
+{PARENTESIS}                {return yytext[0];}
 &&		   				    {return AND;}
 "||"		      			{return OR;}
 {ID}          				{return IDENTIFICADOR;}
 [ \t\n]+          			/* se come los espacios en blanco */
-(.)           				{listaDeRechazo = agregarNodoAlFinal(yytext,listaDeRechazo);}
+(.)           				{}
 
 %%
