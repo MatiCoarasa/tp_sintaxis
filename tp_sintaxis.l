@@ -12,12 +12,12 @@ CEHEXA		0[xX][A-Fa-f0-9]+
 CREAL	    [0-9]*"."[0-9]+([eE]([\+\-]?)[0-9]+)?
 ID       	[a-zA-Z_][a-zA-Z0-9_]*
 LIT  		\".*\"
+CARACTER    \'.\'
 TIPO		int|char|double|float
 INCREMENTO	\+\+|--
 RELACIONAL 	>=|<=|<|>
 IGUALDAD	==|!=
-ASIGNACION 	\+|\+=
-OPERADORES	\+|-|!|,|\?|\:|\=
+OPERADORES	\+|-|!|,|\?|\:|\=|\+=
 PARENTESIS \(|\)|\[|\]|\{|\}
 MULTIPLICATIVO \*|%|\/
 %%
@@ -34,11 +34,11 @@ else                        {return ELSE;}
 {CEOCTAL}     				{return CONSTANTE;}
 {CEHEXA}      				{return CONSTANTE;}
 {CREAL}       				{return CONSTANTE;}
+{CARACTER}                  {return CONSTANTE;} //Esto esta bien?
 {LIT}        				{return LITERALCADENA;}
 {INCREMENTO}	  			{return PREINCREMENTO;}
 {RELACIONAL}     			{return OPERADOR_RELACIONAL;}
 {IGUALDAD}	      			{return OPERADOR_IGUALDAD;}
-{ASIGNACION}		  		{return OPERADOR_ASIGNACION;}
 {OPERADORES}				{return yytext[0];} //Como el string es de un solo char, se devuelve el primer elemento del string, que es el operador
 {PARENTESIS}                {return yytext[0];}
 &&		   				    {return AND;}

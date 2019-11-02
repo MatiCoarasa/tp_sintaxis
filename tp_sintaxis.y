@@ -20,7 +20,10 @@ expresionOpcional: expresion
 		|
 
 expAsignacion: expCondicional
-		| expUnaria OPERADOR_ASIGNACION expAsignacion
+		| expUnaria operAsignacion expAsignacion
+		
+operAsignacion: '='
+		| '+='
 				
 expCondicional: expOr
 		| expOr '?' expresion ':' expCondicional
@@ -91,7 +94,7 @@ variable: IDENTIFICADOR
 inicialOpcional: inicial
 		|
 
-inicial: '=' CONSTANTE
+inicial: '=' CONSTANTE //Esto no considera otros identificadores o cosas como 2+2 o returns de funciones
 		
 declaFuncion: NOMBRETIPO IDENTIFICADOR '(' listaParametrosOpcional ')' '{' codigo '}'
 
@@ -135,7 +138,7 @@ sentSeleccion: IF '(' expresion ')' sentencia
 		
 sentIteracion: WHILE '(' expresion ')' sentencia
 		| DO sentencia WHILE '(' expresion ')' ';'
-		| FOR '(' expresionOpcional ';' expresionOpcional ';' expresionOpcional ')' sentencia //Que pasa con los tokens opcionales?
+		| FOR '(' expresionOpcional ';' expresionOpcional ';' expresionOpcional ')' sentencia //No se puede declarar adentro del for, esta mal??????
 		
 sentSalto: RETURN expresionOpcional ';'
 %%
@@ -159,7 +162,7 @@ yyerror (s)  /* Llamada por yyparse ante un error */
 main ()
 {
   inicializarListas();
-  yyin = fopen("entrada.txt","r");
+  yyin = fopen("entrada.c","r");
   yyparse ();
   
   //printearRechazados();
