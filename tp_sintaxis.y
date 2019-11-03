@@ -94,7 +94,7 @@ variable: IDENTIFICADOR
 inicialOpcional: inicial
 		|
 
-inicial: '=' CONSTANTE //Esto no considera otros identificadores o cosas como 2+2 o returns de funciones
+inicial: '=' CONSTANTE //Esto no considera otros identificadores o cosas como 2+2 o returns de funciones (tal vez poniendo expOR?)
 		
 declaFuncion: NOMBRETIPO IDENTIFICADOR '(' listaParametrosOpcional ')' '{' codigo '}'
 

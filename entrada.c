@@ -1,14 +1,17 @@
 char ayuda(int hola, float nose){
 	
 	int falso = 0;
-	int algo = -5;
-	
+	int algo;
 	
 	if (!falso){
-
-
+		algo = -5;
+		algo = falso;
+		algo = !falso;
+		algo = !falso && falso;
+		algo = (!falso + algo) || falso;
 	}
-
+	
+	return ayuda(1,otraFuncion(algo));
 	
 }
 

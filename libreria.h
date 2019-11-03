@@ -18,6 +18,13 @@ typedef struct {
     char* tipoVariable; //Tal vez se podria hacer por enums?
 } t_variableDeclarada;
 
+typedef struct{
+    char* nombreFuncion;
+    char* tipoDeReturn;
+    t_nodo* tipoDeParametros; //Lista de strings
+} t_funcionDeclarada;
+
+
 t_nodo* agregarValorALista(void* valor, t_nodo* lista);
 char* string_substring(char* text, int start, int length);
 void string_append(char** original, char* string_to_add);

@@ -11,7 +11,6 @@ t_nodo* agregarValorALista(void* valor, t_nodo* lista)
 
     if(lista == NULL)
     {
-        lista = nuevoNodo;
         return nuevoNodo;
     }
 
@@ -22,7 +21,6 @@ t_nodo* agregarValorALista(void* valor, t_nodo* lista)
         aux = aux->siguiente;
     }
 
-    nuevoNodo->siguiente = aux->siguiente;
     aux->siguiente = nuevoNodo;
     return lista;
 
@@ -33,7 +31,7 @@ void printListaDeStrings(t_nodo* lista)
 {
     for(int i = 1; lista != NULL; i++)
     {
-        printf("%d: %s\n", i, lista->valor);
+        printf("%d.: %s\n", i, lista->valor);
         lista = lista->siguiente;
     }
 
