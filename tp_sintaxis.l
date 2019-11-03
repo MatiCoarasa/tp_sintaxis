@@ -36,9 +36,10 @@ else                        {return ELSE;}
 {CREAL}       				{return CONSTANTE;}
 {CARACTER}                  {return CONSTANTE;} //Esto esta bien?
 {LIT}        				{return LITERALCADENA;}
-{INCREMENTO}	  			{return PREINCREMENTO;}
+{INCREMENTO}	  			{return INCREMENTO;}
 {RELACIONAL}     			{return OPERADOR_RELACIONAL;}
 {IGUALDAD}	      			{return OPERADOR_IGUALDAD;}
+{MULTIPLICATIVO}			{return OPERADOR_MULTIPLICATIVO;}
 {OPERADORES}				{return yytext[0];} //Como el string es de un solo char, se devuelve el primer elemento del string, que es el operador
 {PARENTESIS}                {return yytext[0];}
 &&		   				    {return AND;}

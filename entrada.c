@@ -1,7 +1,7 @@
 char ayuda(int hola, float nose){
 	
 	int falso = 0;
-	int algo;
+	int algo = -falso;
 	
 	if (!falso){
 		algo = -5;
@@ -10,11 +10,23 @@ char ayuda(int hola, float nose){
 		algo = !falso && falso;
 		algo = (!falso + algo) || falso;
 	}
+	else{
+		int cero = !1;
+		int uno = (1 && 2) || (0 < 0);
+		int dos = ((!uno)*(-uno))  + uno * 2;
+		int tres = 1.5 + 1.5;
+		int cuatro = sizeof(int);
+		int cinco = unaFuncionQueDevuelveCinco();
+		int seis = 6 ? !0 : -500;
+		int siete = ++seis;
+		siete++;
+		int ocho = siete;
+		procesarNumeros(cuatro,dos,cero);
+	}
 	
 	return ayuda(1,otraFuncion(algo));
 	
 }
-
 
 int funcion(){
 	
@@ -34,6 +46,4 @@ int funcion(){
 	printf("%i",i);
 	
 	return otraVariable;
-	
-	
 }

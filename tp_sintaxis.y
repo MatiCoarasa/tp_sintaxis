@@ -5,7 +5,7 @@ extern FILE *yyin;
 extern t_nodo* listaDeRechazo;
 %}
 
-%token CONSTANTE IDENTIFICADOR OPERADOR_RELACIONAL OPERADOR_IGUALDAD AND OR OPERADOR_ASIGNACION NOMBRETIPO SIZEOF PREINCREMENTO LITERALCADENA RETURN FOR WHILE IF SWITCH DO ELSE OPERADOR_MULTIPLICATIVO
+%token CONSTANTE IDENTIFICADOR OPERADOR_RELACIONAL OPERADOR_IGUALDAD AND OR OPERADOR_ASIGNACION NOMBRETIPO SIZEOF INCREMENTO LITERALCADENA RETURN FOR WHILE IF SWITCH DO ELSE OPERADOR_MULTIPLICATIVO
 %%
 
 codigo:	declaracion codigo
@@ -48,7 +48,8 @@ expMultiplicativa: expUnaria
 		| expMultiplicativa OPERADOR_MULTIPLICATIVO expUnaria
 		
 expUnaria: expPostFijo
-		| expUnaria PREINCREMENTO //En el libro esto estaba al revez. 
+		| INCREMENTO expUnaria
+		| expUnaria INCREMENTO //En el libro no estaba este.
 		| operUnario expUnaria
 		| SIZEOF '('NOMBRETIPO')'
 
@@ -63,7 +64,7 @@ operUnario: '&'
 */
 		
 expPostFijo: expPrimaria
-		| expPostFijo '[' expresion ']'
+		| expPostFijo '[' expresion ']' //Que se supone que es esto?
 		| expPostFijo '(' listaArgumentosOpcional ')'
 
 listaArgumentosOpcional: listaArgumentos
@@ -94,7 +95,7 @@ variable: IDENTIFICADOR
 inicialOpcional: inicial
 		|
 
-inicial: '=' CONSTANTE //Esto no considera otros identificadores o cosas como 2+2 o returns de funciones (tal vez poniendo expOR?)
+inicial: '=' expCondicional //Esto esta cambiado del libro. 
 		
 declaFuncion: NOMBRETIPO IDENTIFICADOR '(' listaParametrosOpcional ')' '{' codigo '}'
 
@@ -116,7 +117,13 @@ sentencia: sentCompuesta
 		| sentIteracion
 		| sentSalto
 
-sentCompuesta: '{' listaDeclaracionesOpcional listaSentenciasOpcional '}'
+
+		
+sentCompuesta: '{' codigo '}' 
+
+/*
+sentCompuesta: '{' listaDeclaracionesOpcional listaSentenciasOpcional '}' //Esto no reconoce declaraciones despues de sentencias
+
 
 listaDeclaracionesOpcional: listaDeclaraciones
 		|
@@ -129,6 +136,7 @@ listaDeclaraciones: declaracion
 
 listaSentencias: sentencia
 		| listaSentencias sentencia
+*/
 
 sentExpresion: expresionOpcional ';'
 
