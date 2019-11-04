@@ -1,11 +1,13 @@
 #include "libreria.h"
 
-t_nodo* variablesDeclaradas;
+t_nodo* variablesDeclaradas = NULL;
 
 void agregarVariableDeclarada(char* nombre, char* tipo)
 {
 
     t_variableDeclarada* nuevaVariable = malloc(sizeof(t_variableDeclarada));
+    nuevaVariable->nombreVariable = strdup(nombre);
+    nuevaVariable->tipoVariable = strdup(tipo);
 
     agregarValorALista(nuevaVariable, variablesDeclaradas);
 

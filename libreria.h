@@ -21,7 +21,7 @@ typedef struct {
 typedef struct{
     char* nombreFuncion;
     char* tipoDeReturn;
-    t_nodo* tipoDeParametros; //Lista de strings
+    t_nodo* tiposDeParametros; //Lista de strings
 } t_funcionDeclarada;
 
 

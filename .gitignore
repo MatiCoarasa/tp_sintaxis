@@ -1,0 +1,4 @@
+crear.bat
+lex.yy.c
+tp_sintaxis.tab.c
+tp_sintaxis.tab.h

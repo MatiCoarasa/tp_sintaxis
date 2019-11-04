@@ -3,7 +3,6 @@
 #include "libreria.h"
 #include "tp_sintaxis.tab.h"
 
-t_nodo* listaDeRechazo;
 %}
 
 CEDECIMAL 	[1-9][0-9]*
@@ -21,7 +20,7 @@ OPERADORES	\+|-|!|,|\?|\:|\=|\+=
 PARENTESIS \(|\)|\[|\]|\{|\}
 MULTIPLICATIVO \*|%|\/
 %%
-{TIPO} 		  				{return NOMBRETIPO;}
+{TIPO} 		  				{yylval.valor = strdup(yytext); return NOMBRETIPO;}
 sizeof		  				{return SIZEOF;}
 return                      {return RETURN;}
 while                       {return WHILE;}
@@ -44,7 +43,7 @@ else                        {return ELSE;}
 {PARENTESIS}                {return yytext[0];}
 &&		   				    {return AND;}
 "||"		      			{return OR;}
-{ID}          				{return IDENTIFICADOR;}
+{ID}          				{yylval.valor = strdup(yytext); return IDENTIFICADOR;}
 [ \t\n]+          			/* se come los espacios en blanco */
 (.)           				{}
 
