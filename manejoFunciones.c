@@ -24,3 +24,23 @@ void liberarBuffer(){
 void agregarTipoDeParametroABuffer(char* tipoDeParametro){
     agregarValorALista(strdup(tipoDeParametro),bufferDeTipoDeParametros);
 }
+int declararId(char* nombre, char* tipo) {
+	if (variableYaFueDeclarada(char* nombre, char* tipo)) {
+		printearVariablesDeclaradas();
+		yyerror(variablesDeclaradas);
+		return 0;
+	} else {
+		agregarVariableDeclarada(char* nombre, char* tipo);
+		printf("Declare %s,Integer\n", nombre);
+		return 1;
+	}
+}
+
+int validarId(char* nombre, char* tipo) {
+	if (!variableYaFueDeclarada(char* nombre, char* tipo)) {
+		printearVariablesNoDeclaradas();
+		yyerror(variablesDeclaradas);
+		return 1;
+	}
+	return 0;
+}
