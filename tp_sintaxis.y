@@ -88,24 +88,24 @@ expPrimaria: IDENTIFICADOR
 		
 // Declaraciones //
 
-declaracion: declaVarSimples
-		| declaFuncion
+declaracion: declaVarSimples {liberarBufferDeNombresDeVariables();}
+		| declaFuncion		 {liberarBufferDeParametros();}
 
-declaVarSimples: NOMBRETIPO listaVarSimples ';' 
+declaVarSimples: NOMBRETIPO listaVarSimples ';' {declararTodasLasVariablesEnBuffer($<valor>1);}
 
 listaVarSimples: unaVarSimple
-		| listaVarSimples ',' unaVarSimple
+		| listaVarSimples ',' unaVarSimple 
 		
-unaVarSimple: variable inicialOpcional
+unaVarSimple: variable inicialOpcional {agregarNombreDeVariableABuffer($<valor>1);}
 
-variable: IDENTIFICADOR {printf("Se declaro la variable: %s\n",$<valor>1);}  //Temporal para testear el funcionamiento del union
+variable: IDENTIFICADOR 
 
 inicialOpcional: inicial
 		|
 
 inicial: '=' expCondicional //Esto esta cambiado del libro. 
 		
-declaFuncion: NOMBRETIPO IDENTIFICADOR '(' listaParametrosOpcional ')' '{' codigo '}' {printf("Se declaro la funcion: %s %s()\n",$<valor>1,$<valor>2);} //Temporal para testear el funcionamiento del union
+declaFuncion: NOMBRETIPO IDENTIFICADOR '(' listaParametrosOpcional ')' '{' codigo '}' {agregarFuncionDeclarada($<valor>2,$<valor>1);}
 
 listaParametrosOpcional: listaParametros
 		|
@@ -113,7 +113,7 @@ listaParametrosOpcional: listaParametros
 listaParametros: unParametro
 		| listaParametros ',' unParametro
 
-unParametro: NOMBRETIPO unaVarSimple
+unParametro: NOMBRETIPO unaVarSimple {agregarTipoDeParametroABuffer($<valor>1);}
 		//| NOMBRETIPO
 
 
@@ -163,6 +163,8 @@ main ()
 {
   yyin = fopen("entrada.c","r");
   yyparse ();
+  printearVariablesDeclaradas();
+  printearFuncionesDeclaradas();
   
   return 0;
 }

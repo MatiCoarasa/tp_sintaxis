@@ -1,6 +1,27 @@
 #include "libreria.h"
 
 t_nodo* variablesDeclaradas = NULL;
+t_nodo* bufferDeNombreDeVariables = NULL;
+
+void agregarNombreDeVariableABuffer(char* nombre){
+    bufferDeNombreDeVariables = agregarValorALista(strdup(nombre), bufferDeNombreDeVariables);
+}
+
+void liberarBufferDeNombresDeVariables(){
+    liberarLista(bufferDeNombreDeVariables);
+    bufferDeNombreDeVariables = NULL;
+}
+
+void declararTodasLasVariablesEnBuffer(char* tipoDeVariables){
+
+    t_nodo* listaAux = bufferDeNombreDeVariables;
+    while(listaAux != NULL){
+        agregarVariableDeclarada(listaAux->valor,tipoDeVariables);
+        listaAux = listaAux->siguiente;
+    }
+    liberarBufferDeNombresDeVariables();
+
+}
 
 void agregarVariableDeclarada(char* nombre, char* tipo)
 {
@@ -9,7 +30,7 @@ void agregarVariableDeclarada(char* nombre, char* tipo)
     nuevaVariable->nombreVariable = strdup(nombre);
     nuevaVariable->tipoVariable = strdup(tipo);
 
-    agregarValorALista(nuevaVariable, variablesDeclaradas);
+    variablesDeclaradas = agregarValorALista(nuevaVariable, variablesDeclaradas);
 
 }
 
@@ -38,7 +59,7 @@ void printearVariablesDeclaradas(){
     while(listaAux != NULL){
         t_variableDeclarada* unaVariable = listaAux->valor;
         printf("%s %s;\n", unaVariable->tipoVariable, unaVariable->nombreVariable); //Si se cambia por enum los tipos hay que cambiar aca. (Hacer funcion de enum->string)
-        listaAux->siguiente;
+        listaAux = listaAux->siguiente;
     }
 
     printf("------\n\n");

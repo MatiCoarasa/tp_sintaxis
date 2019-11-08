@@ -1,11 +1,11 @@
 #include "libreria.h"
 
-t_nodo* agregarValorALista(void* valor, t_nodo* lista)
+t_nodo* agregarValorALista(void* valor, t_nodo* lista) //El puntero que se envia como valor no se tiene que liberar
 {
 
     t_nodo* nuevoNodo = (t_nodo*)malloc(sizeof(t_nodo));
 
-    nuevoNodo->valor = strdup(valor);
+    nuevoNodo->valor = valor;
     nuevoNodo->siguiente = NULL;
     nuevoNodo->fueContado = false;
 

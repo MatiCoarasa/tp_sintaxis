@@ -1,4 +1,4 @@
-char ayuda(int hola, float nose){
+char ayuda(int hola, float nose, char unBuenParametro){
 	
 	int falso = 0;
 	int algo = -falso;
@@ -30,7 +30,7 @@ char ayuda(int hola, float nose){
 
 int funcion(){
 	
-	int unaVariable = 5;
+	int unaVariable,otraCosa,otraOtraCosa = 5;
 	char otraVariable = 'a';
 	
 	int i;
