@@ -165,6 +165,7 @@ main ()
   yyparse ();
   printearVariablesDeclaradas();
   printearFuncionesDeclaradas();
+  printearErroresSemanticos();
   
   return 0;
 }

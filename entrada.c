@@ -32,6 +32,9 @@ int funcion(){
 	
 	int unaVariable,otraCosa,otraOtraCosa = 5;
 	char otraVariable = 'a';
+	float repetido = 345.23;
+	float repetido = 012;
+	float repetido = 0x433;
 	
 	int i;
 	
