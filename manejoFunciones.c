@@ -53,5 +53,4 @@ void printearFuncionesDeclaradas(){
         listaAux = listaAux->siguiente;
     }
     printf("------\n\n");
-
 }
