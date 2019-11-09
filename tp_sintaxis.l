@@ -16,9 +16,11 @@ TIPO		int|char|double|float
 INCREMENTO	\+\+|--
 RELACIONAL 	>=|<=|<|>
 IGUALDAD	==|!=
-OPERADORES	\+|-|!|,|\?|\:|\=|\+=
+OPERADORES	\+|-|!|,|\?|\:
 PARENTESIS \(|\)|\[|\]|\{|\}
 MULTIPLICATIVO \*|%|\/
+ASIGNACION =|\+=|-=
+
 %%
 {TIPO} 		  				{yylval.valor = strdup(yytext); return NOMBRETIPO;}
 sizeof		  				{return SIZEOF;}
@@ -36,6 +38,7 @@ else                        {return ELSE;}
 {CARACTER}                  {return CONSTANTE;} //Esto esta bien?
 {LIT}        				{return LITERALCADENA;}
 {INCREMENTO}	  			{return INCREMENTO;}
+{ASIGNACION}				{return '=';} //Por alguna razon el bison no reconoce el token o no se esta enviando el token. Pero si reconoce el envio de un char. Ni idea.
 {RELACIONAL}     			{return OPERADOR_RELACIONAL;}
 {IGUALDAD}	      			{return OPERADOR_IGUALDAD;}
 {MULTIPLICATIVO}			{return OPERADOR_MULTIPLICATIVO;}

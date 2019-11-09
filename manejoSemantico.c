@@ -1,17 +1,7 @@
 #include "libreria.h"
 extern t_nodo* variablesRepetidas;
 t_nodo* lineasDeErrorBinario = NULL;
-
-void printearErroresSemanticos()
-{
-    printf("--ERRORES SEMANTICOS--\n\n");
-    printearVariablesRepetidas();
-    printf("\n--\n");
-    printearErroresBinarios();
-    printf("\n--\n");
-
-}
-
+t_nodo* lineasDeErrorAsignacion = NULL;
 
 void printearVariablesRepetidas()
 {
@@ -40,14 +30,26 @@ void printearErroresBinarios(){
     }
 }
 
-bool lineaEnLaLista(int linea)
+void printearErroresDeAsignacion(){
+    printf("-Errores de asignacion-\n");
+
+    t_nodo* listaAux = lineasDeErrorAsignacion;
+
+    while(listaAux != NULL){
+        int* unaLinea = listaAux->valor;
+        printf("Error en la linea %i\n",*unaLinea);
+        listaAux = listaAux->siguiente;
+    }
+}
+
+bool numeroEnLaLista(int numero, t_nodo* lista)
 {
-    t_nodo* nodoDeLista = lineasDeErrorBinario;
+    t_nodo* nodoDeLista = lista;
 
     while(nodoDeLista != NULL)
     {
-        int* unaLinea = nodoDeLista->valor;
-        if(*unaLinea == linea)
+        int* unNumero = nodoDeLista->valor;
+        if(*unNumero == numero)
         {
             return true;
         }
@@ -61,14 +63,40 @@ bool lineaEnLaLista(int linea)
 
 }
 
+t_nodo* agregarIntALista(int numero,t_nodo* lista){
+
+    if(!numeroEnLaLista(numero,lista))
+    {
+        int* numeroEnPuntero = malloc(sizeof(int));
+        *numeroEnPuntero = numero;
+        return agregarValorALista(numeroEnPuntero, lista);
+    }
+    else{
+        return lista;
+    }
+
+
+}
+
 void agregarErrorBinarioEnLinea(int linea)
 {
+    lineasDeErrorBinario = agregarIntALista(linea,lineasDeErrorBinario);
+}
 
-    if(!lineaEnLaLista(linea))
-    {
-        int* lineaEnPuntero = malloc(sizeof(int));
-        *lineaEnPuntero = linea;
-        lineasDeErrorBinario = agregarValorALista(lineaEnPuntero, lineasDeErrorBinario);
-    }
+void agregarErrorAsignacionEnLinea(int linea){
+    lineasDeErrorAsignacion = agregarIntALista(linea,lineasDeErrorAsignacion);
+}
+
+
+
+void printearErroresSemanticos()
+{
+    printf("--ERRORES SEMANTICOS--\n\n");
+    printearVariablesRepetidas();
+    printf("\n--\n");
+    printearErroresBinarios();
+    printf("\n--\n");
+    printearErroresDeAsignacion();
+    printf("\n--\n");
 
 }

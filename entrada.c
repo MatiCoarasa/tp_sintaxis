@@ -17,7 +17,7 @@ char ayuda(int hola, float nose, char unBuenParametro){
 		int tres = 1.5 + 1.5;
 		int cuatro = sizeof(int);
 		int cinco = unaFuncionQueDevuelveCinco();
-		int seis = 6 ? !0 : -500;
+		int seis = 6;
 		int siete = ++seis;
 		siete++;
 		int ocho = siete;
@@ -38,6 +38,13 @@ int funcion(){
 	float repetido = 0x433;
 	
 	int i;
+	
+	i += 1;
+	i -= 1;
+	i += repetido + 2*4;
+	
+	123 = 12;
+	
 	
 	2*2*"hola" + 2234;
 	

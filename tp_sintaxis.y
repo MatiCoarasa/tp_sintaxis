@@ -11,11 +11,11 @@ extern int yylineno;
 }
 
 
-%token CONSTANTE OPERADOR_RELACIONAL OPERADOR_IGUALDAD AND OR OPERADOR_ASIGNACION SIZEOF INCREMENTO LITERALCADENA RETURN FOR WHILE IF SWITCH DO ELSE OPERADOR_MULTIPLICATIVO
+%token CONSTANTE OPERADOR_RELACIONAL OPERADOR_IGUALDAD AND OR SIZEOF INCREMENTO LITERALCADENA RETURN FOR WHILE IF SWITCH DO ELSE OPERADOR_MULTIPLICATIVO ASIGNACION
 
 %token <valor> IDENTIFICADOR
 %token <valor> NOMBRETIPO
-%type  <tipo>  expPrimaria expPostFijo expUnaria expMultiplicativa expAditiva expRelacional expIgualdad expAnd expOr expCondicional expAsignacion expresion listaArgumentosOpcional listaArgumentos
+%type  <tipo>  expPrimaria expPostFijo expUnaria expMultiplicativa expAditiva expRelacional expIgualdad expAnd expOr expAsignacion expresion listaArgumentosOpcional listaArgumentos
 %type  <valor> unaVarSimple
 %%
 
@@ -30,15 +30,11 @@ expresion:	expAsignacion {$$ = $1;}
 expresionOpcional: expresion
 		|
 
-expAsignacion: expCondicional {$$ = $1;}
+expAsignacion: expOr {$$ = $1;}
 		| expUnaria operAsignacion expAsignacion {$$ = $1 && $3;}
 		
 operAsignacion: '='
-		| '+='
 				
-expCondicional: expOr {$$ = $1;}
-		| expOr '?' expresion ':' expCondicional {$$ = $1 && $3 && $5;}
-
 expOr: expAnd {$$ = $1;}
 		| expOr OR expAnd {$$ = $1 && $3;}
 
@@ -84,7 +80,7 @@ listaArgumentosOpcional: listaArgumentos {$$ = $1;}
 listaArgumentos: expAsignacion	{$$ = $1;}
 		| listaArgumentos ',' expAsignacion {$$ = $1 && $3;}
 		
-expPrimaria: IDENTIFICADOR	{$$ = 1;}
+expPrimaria: IDENTIFICADOR	{$$ = 2;}
 		| CONSTANTE			{$$ = 1;}
 		| LITERALCADENA		{$$ = 0;}
 		| '(' expresion ')'	{$$ = $2;}
@@ -106,7 +102,7 @@ variable: IDENTIFICADOR
 inicialOpcional: inicial
 		|
 
-inicial: '=' expCondicional //Esto esta cambiado del libro. 
+inicial: '=' expOr //Esto esta cambiado del libro. 
 		
 declaFuncion: NOMBRETIPO IDENTIFICADOR '(' listaParametrosOpcional ')' '{' codigo '}' {agregarFuncionDeclarada($<valor>2,$<valor>1);}
 
@@ -168,6 +164,16 @@ int checkeoOperacionBinaria(int tipoPrimerTermino, int tipoSegundoTermino){
 	}
 	else{
 		agregarErrorBinarioEnLinea(yylineno);
+		return 0;
+	}
+}
+
+int checkeoAsignacion(int tipoTerminoAsignado){
+	if(tipoTerminoAsignado == 2){
+		return 1; //En la asignacion se vuelve una constante
+	}
+	else{
+		agregarErrorAsignacionEnLinea(yylineno);
 		return 0;
 	}
 }
