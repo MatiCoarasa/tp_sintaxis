@@ -2,10 +2,12 @@
 #include <stdio.h>
 #include "libreria.h"
 extern FILE *yyin;
+extern int yylineno; 
 %}
 
 %union { 
 	char* valor;
+	int tipo;
 }
 
 
@@ -13,7 +15,8 @@ extern FILE *yyin;
 
 %token <valor> IDENTIFICADOR
 %token <valor> NOMBRETIPO
-
+%type  <tipo>  expPrimaria expPostFijo expUnaria expMultiplicativa expAditiva expRelacional expIgualdad expAnd expOr expCondicional expAsignacion expresion listaArgumentosOpcional listaArgumentos
+%type  <valor> unaVarSimple
 %%
 
 codigo:	declaracion codigo
@@ -22,44 +25,44 @@ codigo:	declaracion codigo
 
 //Expresiones
 
-expresion:	expAsignacion
+expresion:	expAsignacion {$$ = $1;}
 
 expresionOpcional: expresion
 		|
 
-expAsignacion: expCondicional
-		| expUnaria operAsignacion expAsignacion
+expAsignacion: expCondicional {$$ = $1;}
+		| expUnaria operAsignacion expAsignacion {$$ = $1 && $3;}
 		
 operAsignacion: '='
 		| '+='
 				
-expCondicional: expOr
-		| expOr '?' expresion ':' expCondicional
+expCondicional: expOr {$$ = $1;}
+		| expOr '?' expresion ':' expCondicional {$$ = $1 && $3 && $5;}
 
-expOr: expAnd
-		| expOr OR expAnd
+expOr: expAnd {$$ = $1;}
+		| expOr OR expAnd {$$ = $1 && $3;}
 
-expAnd: expIgualdad
-		| expAnd AND expIgualdad
+expAnd: expIgualdad {$$ = $1;}
+		| expAnd AND expIgualdad {$$ = $1 && $3;}
 		
-expIgualdad: expRelacional
-		| expIgualdad OPERADOR_IGUALDAD expRelacional
+expIgualdad: expRelacional {$$ = $1;}
+		| expIgualdad OPERADOR_IGUALDAD expRelacional {$$ = $1 && $3;}
 		
-expRelacional: expAditiva
-		| expRelacional OPERADOR_RELACIONAL expAditiva
+expRelacional: expAditiva	{$$ = $1;}
+		| expRelacional OPERADOR_RELACIONAL expAditiva {$$ = $1 && $3;}
 
-expAditiva: expMultiplicativa
-		| expAditiva '+' expMultiplicativa
-		| expAditiva '-' expMultiplicativa
+expAditiva: expMultiplicativa	{$$ = $1;}
+		| expAditiva '+' expMultiplicativa {$$ = checkeoOperacionBinaria($1,$3);}
+		| expAditiva '-' expMultiplicativa {$$ = checkeoOperacionBinaria($1,$3);}
 
-expMultiplicativa: expUnaria
-		| expMultiplicativa OPERADOR_MULTIPLICATIVO expUnaria
+expMultiplicativa: expUnaria	{$$ = $1;}
+		| expMultiplicativa OPERADOR_MULTIPLICATIVO expUnaria {$$ = checkeoOperacionBinaria($1,$3);}
 		
-expUnaria: expPostFijo
-		| INCREMENTO expUnaria
-		| expUnaria INCREMENTO //En el libro no estaba este.
-		| operUnario expUnaria
-		| SIZEOF '('NOMBRETIPO')'
+expUnaria: expPostFijo	{$$ = $1;}
+		| INCREMENTO expUnaria	{$$ = $2;}
+		| expUnaria INCREMENTO {$$ = $1;} //En el libro no estaba este.
+		| operUnario expUnaria {$$ = $2;}
+		| SIZEOF '('NOMBRETIPO')' {$$ = 1;}
 
 operUnario: '-'
 		| '!'
@@ -71,20 +74,20 @@ operUnario: '&'
 		| '!'
 */
 		
-expPostFijo: expPrimaria
-		| expPostFijo '[' expresion ']' //Que se supone que es esto?
-		| expPostFijo '(' listaArgumentosOpcional ')'
+expPostFijo: expPrimaria	{$$ = $1;}
+		| expPostFijo '[' expresion ']'	{$$ = $1 && $3;}
+		| expPostFijo '(' listaArgumentosOpcional ')' {$$ = $1 && $3;}
 
-listaArgumentosOpcional: listaArgumentos
-		|
+listaArgumentosOpcional: listaArgumentos {$$ = $1;}
+		|	{$$ = 1;}
 
-listaArgumentos: expAsignacion
-		| listaArgumentos ',' expAsignacion
+listaArgumentos: expAsignacion	{$$ = $1;}
+		| listaArgumentos ',' expAsignacion {$$ = $1 && $3;}
 		
-expPrimaria: IDENTIFICADOR
-		| CONSTANTE
-		| LITERALCADENA
-		| '(' expresion ')'
+expPrimaria: IDENTIFICADOR	{$$ = 1;}
+		| CONSTANTE			{$$ = 1;}
+		| LITERALCADENA		{$$ = 0;}
+		| '(' expresion ')'	{$$ = $2;}
 		
 // Declaraciones //
 
@@ -93,10 +96,10 @@ declaracion: declaVarSimples {liberarBufferDeNombresDeVariables();}
 
 declaVarSimples: NOMBRETIPO listaVarSimples ';' {declararTodasLasVariablesEnBuffer($<valor>1);}
 
-listaVarSimples: unaVarSimple
-		| listaVarSimples ',' unaVarSimple 
+listaVarSimples: unaVarSimple				{agregarNombreDeVariableABuffer($<valor>1);}
+		| listaVarSimples ',' unaVarSimple	{agregarNombreDeVariableABuffer($<valor>3);}
 		
-unaVarSimple: variable inicialOpcional {agregarNombreDeVariableABuffer($<valor>1);}
+unaVarSimple: variable inicialOpcional {$$ = $<valor>1;}
 
 variable: IDENTIFICADOR 
 
@@ -159,6 +162,20 @@ sentIteracion: WHILE '(' expresion ')' sentencia
 sentSalto: RETURN expresionOpcional ';'
 %%
 
+int checkeoOperacionBinaria(int tipoPrimerTermino, int tipoSegundoTermino){
+	if (tipoPrimerTermino && tipoSegundoTermino){
+		return 1;
+	}
+	else{
+		agregarErrorBinarioEnLinea(yylineno);
+		return 0;
+	}
+}
+
+void yyerror(const char *msg) {
+	printf("línea %s\n", msg);
+}
+
 main ()
 {
   yyin = fopen("entrada.c","r");
@@ -166,6 +183,5 @@ main ()
   printearVariablesDeclaradas();
   printearFuncionesDeclaradas();
   printearErroresSemanticos();
-  
   return 0;
 }

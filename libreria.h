@@ -4,9 +4,6 @@
 #include <math.h>
 #include <stdbool.h>
 
-typedef unsigned int t_uint;
-
-
 typedef struct t_nodo {
     struct t_nodo* siguiente;
     bool fueContado;
@@ -26,10 +23,11 @@ typedef struct{
 
 
 t_nodo* agregarValorALista(void* valor, t_nodo* lista);
-char* string_substring(char* text, int start, int length);
-void string_append(char** original, char* string_to_add);
-void printListaDeStrings(t_nodo* lista);
 void liberarLista(t_nodo* lista);
-void mapLista(t_nodo* lista, void func(t_nodo*));
-int largoLista(t_nodo* lista);
-void reporteDeRechazados(t_nodo* unNodo);
+void printearVariablesDeclaradas();
+void declararTodasLasVariablesEnBuffer(char* tipoDeVariables);
+bool variableYaFueRepetida(char* nombre,char* tipo);
+void agregarNombreDeVariableABuffer(char* nombre);
+t_nodo* agregarValorALista(void* valor, t_nodo* lista);
+void liberarLista(t_nodo* lista);
+void agregarErrorBinarioEnLinea(int linea);

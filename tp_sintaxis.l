@@ -4,7 +4,7 @@
 #include "tp_sintaxis.tab.h"
 
 %}
-
+%option yylineno
 CEDECIMAL 	[1-9][0-9]*
 CEOCTAL		0[0-7]*
 CEHEXA		0[xX][A-Fa-f0-9]+

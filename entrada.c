@@ -23,6 +23,7 @@ char ayuda(int hola, float nose, char unBuenParametro){
 		int ocho = siete;
 		procesarNumeros(cuatro,dos,cero);
 	}
+	char estoNoAnda = "chau" + "hola" + 3 * 4;
 	
 	return ayuda(1,otraFuncion(algo));
 	
@@ -38,6 +39,11 @@ int funcion(){
 	
 	int i;
 	
+	2*2*"hola" + 2234;
+	
+	("hola" * 2) + 2 + (3 + 4);
+	
+	
 	for(i = 0; i<10 ;i++ ){
 		int otroCoso = 10;
 		
@@ -45,6 +51,8 @@ int funcion(){
 			otroCoso--;
 		}
 	}
+	
+	
 	
 	printf("%i",i);
 	
