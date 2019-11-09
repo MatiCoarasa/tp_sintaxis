@@ -79,22 +79,3 @@ void agregarVariableDeclarada(char* nombre, char* tipo)
 
 
 }
-
-void printearVariablesDeclaradas()
-{
-
-    printf("--VARIABLES DECLARADAS--\n\n");
-
-    t_nodo* listaAux = variablesDeclaradas;
-
-    while(listaAux != NULL)
-    {
-        t_variableDeclarada* unaVariable = listaAux->valor;
-        printf("%s %s;\n", unaVariable->tipoVariable, unaVariable->nombreVariable); //Si se cambia por enum los tipos hay que cambiar aca. (Hacer funcion de enum->string)
-        listaAux = listaAux->siguiente;
-    }
-
-    printf("------\n\n");
-
-
-}

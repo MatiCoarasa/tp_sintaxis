@@ -4,6 +4,8 @@
 #include <math.h>
 #include <stdbool.h>
 
+#define MAXBUFFER 500
+
 typedef struct t_nodo {
     struct t_nodo* siguiente;
     bool fueContado;
