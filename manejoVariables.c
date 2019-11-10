@@ -42,19 +42,6 @@ void liberarBufferDeNombresDeVariables()
     bufferDeNombreDeVariables = NULL;
 }
 
-void declararTodasLasVariablesEnBuffer(char* tipoDeVariables)
-{
-
-    t_nodo* listaAux = bufferDeNombreDeVariables;
-    while(listaAux != NULL)
-    {
-        agregarVariableDeclarada(listaAux->valor,tipoDeVariables);
-        listaAux = listaAux->siguiente;
-    }
-    liberarBufferDeNombresDeVariables();
-
-}
-
 void agregarVariableRepetida(t_variableDeclarada* variableRepetida){
     if (!variableYaFueRepetida(variableRepetida->nombreVariable,variableRepetida->tipoVariable)){
         variablesRepetidas = agregarValorALista(variableRepetida, variablesRepetidas);
@@ -79,3 +66,20 @@ void agregarVariableDeclarada(char* nombre, char* tipo)
 
 
 }
+
+void declararTodasLasVariablesEnBuffer(char* tipoDeVariables)
+{
+
+    t_nodo* listaAux = bufferDeNombreDeVariables;
+    while(listaAux != NULL)
+    {
+        agregarVariableDeclarada(listaAux->valor,tipoDeVariables);
+        listaAux = listaAux->siguiente;
+    }
+    liberarBufferDeNombresDeVariables();
+
+}
+
+
+
+

@@ -4,6 +4,9 @@ t_nodo* bufferDeTipoDeParametros = NULL; //Tal vez ponerle "buffer" es exagerado
 
 t_nodo* funcionesDeclaradas = NULL;
 
+void liberarBufferDeParametros(){ //La funcionDeclarada toma el buffer como estaba y lo usa, asi que no hay que liberar la lista, simplemente "hacer una nueva". Basicamente hay que dejar esto como esta.
+    bufferDeTipoDeParametros = NULL;
+}
 
 void agregarFuncionDeclarada(char* nombreFuncion,char* tipoReturn){
     t_funcionDeclarada* nuevaFuncion = malloc(sizeof(t_funcionDeclarada));
@@ -15,10 +18,6 @@ void agregarFuncionDeclarada(char* nombreFuncion,char* tipoReturn){
 
     funcionesDeclaradas = agregarValorALista(nuevaFuncion,funcionesDeclaradas);
 
-}
-
-void liberarBufferDeParametros(){ //La funcionDeclarada toma el buffer como estaba y lo usa, asi que no hay que liberarla, simplemente "hacer una nueva". Basicamente hay que dejar esto como esta.
-    bufferDeTipoDeParametros = NULL;
 }
 
 void agregarTipoDeParametroABuffer(char* tipoDeParametro){

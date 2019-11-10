@@ -106,7 +106,7 @@ inicialOpcional: inicial
 
 inicial: '=' expOr //Esto esta cambiado del libro. 
 		
-declaFuncion: NOMBRETIPO IDENTIFICADOR '(' listaParametrosOpcional ')' '{' codigo '}' {agregarFuncionDeclarada($<valor>2,$<valor>1);}
+declaFuncion: NOMBRETIPO IDENTIFICADOR '(' listaParametrosOpcional ')' '{' codigo '}' {agregarFuncionDeclarada($<valor>2,$<valor>1);} //Los parametros se agregan dentro de la funcion por el buffer.
 
 listaParametrosOpcional: listaParametros
 		|
@@ -138,7 +138,7 @@ sentSeleccion: IF '(' expresion ')' sentencia
 		
 sentIteracion: WHILE '(' expresion ')' sentencia
 		| DO sentencia WHILE '(' expresion ')' ';'
-		| FOR '(' expresionOpcional ';' expresionOpcional ';' expresionOpcional ')' sentencia //No se puede declarar adentro del for, esta mal??????
+		| FOR '(' expresionOpcional ';' expresionOpcional ';' expresionOpcional ')' sentencia //Esto no reconoce declaraciones dentro del for como "for(int i = 0;i<10;i++)"
 		
 sentSalto: RETURN expresionOpcional ';'
 %%

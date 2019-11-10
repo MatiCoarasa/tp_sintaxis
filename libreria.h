@@ -14,7 +14,7 @@ typedef struct t_nodo {
 
 typedef struct {
     char* nombreVariable;
-    char* tipoVariable; //Tal vez se podria hacer por enums?
+    char* tipoVariable;
 } t_variableDeclarada;
 
 typedef struct{
@@ -33,3 +33,10 @@ void agregarNombreDeVariableABuffer(char* nombre);
 t_nodo* agregarValorALista(void* valor, t_nodo* lista);
 void liberarLista(t_nodo* lista);
 void agregarErrorBinarioEnLinea(int linea);
+void liberarBufferDeNombresDeVariables();
+void liberarBufferDeParametros();
+void agregarFuncionDeclarada(char* nombreFuncion,char* tipoReturn);
+void agregarTipoDeParametroABuffer(char* tipoDeParametro);
+void agregarErrorAsignacionEnLinea(int linea);
+void agregarErrorSintactico(int linea);
+void reportar();
