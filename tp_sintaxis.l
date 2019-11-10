@@ -10,7 +10,7 @@ CEOCTAL		0[0-7]*
 CEHEXA		0[xX][A-Fa-f0-9]+
 CREAL	    [0-9]*"."[0-9]+([eE]([\+\-]?)[0-9]+)?
 ID       	[a-zA-Z_][a-zA-Z0-9_]*
-LIT  		\"(\\.|[^"\\])*\"  //Fue necesario cambiar esto porque reconocia un caso especifico mal.
+LIT  		\"(\\.|[^"\\])*\" 
 CARACTER    \'.\'
 TIPO		int|char|double|float
 INCREMENTO	\+\+|--
