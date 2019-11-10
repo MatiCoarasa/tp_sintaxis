@@ -1,4 +1,4 @@
-char ayuda(int hola, float nose, char unBuenParametro){
+char pruebasRaras(int hola, float nose, char unBuenParametro){
 	
 	int falso = 0;
 	int algo = -falso;
@@ -29,27 +29,43 @@ char ayuda(int hola, float nose, char unBuenParametro){
 	
 }
 
-int funcion(){
+int mainFalso(){	
+	repeticion_de_variables;
 	
-	int unaVariable,otraCosa,otraOtraCosa = 5;
-	char otraVariable = 'a';
 	float repetido = 345.23;
 	float repetido = 012;
 	float repetido = 0x433;
 	
-	int i;
+	int repe;
+	int repe;
 	
+	errores_sintacticos;
 	i*h(;
+	i-;
+	));
+	(1+1) + 2*4);
+	
+	errores_de_asignacion;
+	123 = 12;
+	"hola" = "chau";
+	2 = 2;
+	
+	
+	errores_de_operacion_binaria;
+	
+	2*2*"hola" + 2234;
+	
+	("hola" * 2) + 2 + (3 + 4);
+	
+	
+	pruebas_varias;
 	
 	i += 1;
 	i -= 1;
 	i += repetido + 2*4;
 	
-	123 = 12;
-	
-	2*2*"hola" + 2234;
-	
-	("hola" * 2) + 2 + (3 + 4);
+	int unaVariable,otraCosa,otraOtraCosa = 5;
+	char otraVariable = 'a';
 	
 	
 	for(i = 0; i<10 ;i++ ){
@@ -60,9 +76,13 @@ int funcion(){
 		}
 	}
 	
-	
-	
 	printf("%i",i);
 	
 	return otraVariable;
 }
+
+float funcionfuncion(){
+	
+}
+
+double function(double valor){return valor;}

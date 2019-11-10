@@ -10,16 +10,16 @@ CEOCTAL		0[0-7]*
 CEHEXA		0[xX][A-Fa-f0-9]+
 CREAL	    [0-9]*"."[0-9]+([eE]([\+\-]?)[0-9]+)?
 ID       	[a-zA-Z_][a-zA-Z0-9_]*
-LIT  		\".*\"
+LIT  		\"(\\.|[^"\\])*\"  //Fue necesario cambiar esto porque reconocia un caso especifico mal.
 CARACTER    \'.\'
 TIPO		int|char|double|float
 INCREMENTO	\+\+|--
 RELACIONAL 	>=|<=|<|>
 IGUALDAD	==|!=
-OPERADORES	\+|-|!|,|\?|\:
+OPERADORES	\+|-|!|,|\:|=
 PARENTESIS \(|\)|\[|\]|\{|\}
 MULTIPLICATIVO \*|%|\/
-ASIGNACION =|\+=|-=
+ASIGNACION_INCREMENTAL \+=|-=
 
 %%
 {TIPO} 		  				{yylval.valor = strdup(yytext); return NOMBRETIPO;}
@@ -35,10 +35,10 @@ else                        {return ELSE;}
 {CEOCTAL}     				{return CONSTANTE;}
 {CEHEXA}      				{return CONSTANTE;}
 {CREAL}       				{return CONSTANTE;}
-{CARACTER}                  {return CONSTANTE;} //Esto esta bien?
+{CARACTER}                  {return CONSTANTE;}
 {LIT}        				{return LITERALCADENA;}
 {INCREMENTO}	  			{return INCREMENTO;}
-{ASIGNACION}				{return '=';} //Por alguna razon el bison no reconoce el token o no se esta enviando el token. Pero si reconoce el envio de un char. Ni idea.
+{ASIGNACION_INCREMENTAL}	{return ASIGNACION_INCREMENTAL;}
 {RELACIONAL}     			{return OPERADOR_RELACIONAL;}
 {IGUALDAD}	      			{return OPERADOR_IGUALDAD;}
 {MULTIPLICATIVO}			{return OPERADOR_MULTIPLICATIVO;}

@@ -11,7 +11,7 @@ extern int yylineno;
 }
 
 
-%token CONSTANTE OPERADOR_RELACIONAL OPERADOR_IGUALDAD AND OR SIZEOF INCREMENTO LITERALCADENA RETURN FOR WHILE IF SWITCH DO ELSE OPERADOR_MULTIPLICATIVO ASIGNACION
+%token CONSTANTE OPERADOR_RELACIONAL OPERADOR_IGUALDAD AND OR SIZEOF INCREMENTO LITERALCADENA RETURN FOR WHILE IF SWITCH DO ELSE OPERADOR_MULTIPLICATIVO ASIGNACION_INCREMENTAL
 
 %token <valor> IDENTIFICADOR
 %token <valor> NOMBRETIPO
@@ -26,15 +26,16 @@ codigo:	declaracion codigo
 
 //Expresiones
 
-expresion:	expAsignacion {$$ = $1;}
+expresion:	expAsignacion {$$ = $1;} 
 
 expresionOpcional: expresion
 		|
 
 expAsignacion: expOr {$$ = $1;}
-		| expUnaria operAsignacion expAsignacion {$$ = $1 && $3;}
+		| expUnaria operAsignacion expAsignacion {$$ = checkeoAsignacion($1);}
 		
-operAsignacion: '='
+operAsignacion: '=' 
+		| ASIGNACION_INCREMENTAL 
 				
 expOr: expAnd {$$ = $1;}
 		| expOr OR expAnd {$$ = $1 && $3;}
@@ -46,7 +47,7 @@ expIgualdad: expRelacional {$$ = $1;}
 		| expIgualdad OPERADOR_IGUALDAD expRelacional {$$ = $1 && $3;}
 		
 expRelacional: expAditiva	{$$ = $1;}
-		| expRelacional OPERADOR_RELACIONAL expAditiva {$$ = $1 && $3;}
+		| expRelacional OPERADOR_RELACIONAL expAditiva {$$ = $1 && $3;} 
 
 expAditiva: expMultiplicativa	{$$ = $1;}
 		| expAditiva '+' expMultiplicativa {$$ = checkeoOperacionBinaria($1,$3);}
@@ -129,23 +130,6 @@ sentencia: sentCompuesta
 		
 sentCompuesta: '{' codigo '}' 
 
-/*
-sentCompuesta: '{' listaDeclaracionesOpcional listaSentenciasOpcional '}' //Esto no reconoce declaraciones despues de sentencias
-
-
-listaDeclaracionesOpcional: listaDeclaraciones
-		|
-
-listaSentenciasOpcional: listaSentencias
-		|
-
-listaDeclaraciones: declaracion
-		| listaDeclaraciones declaracion
-
-listaSentencias: sentencia
-		| listaSentencias sentencia
-*/
-
 sentExpresion: expresionOpcional ';'
 
 sentSeleccion: IF '(' expresion ')' sentencia
@@ -169,8 +153,8 @@ int checkeoOperacionBinaria(int tipoPrimerTermino, int tipoSegundoTermino){
 	}
 }
 
-int checkeoAsignacion(int tipoTerminoAsignado){
-	if(tipoTerminoAsignado == 2){
+int checkeoAsignacion(int tipoTerminoLvalue){
+	if(tipoTerminoLvalue == 2){
 		return 1; //En la asignacion se vuelve una constante
 	}
 	else{
