@@ -2,6 +2,7 @@
 extern t_nodo* variablesRepetidas;
 t_nodo* lineasDeErrorBinario = NULL;
 t_nodo* lineasDeErrorAsignacion = NULL;
+t_nodo* lineasDeErrorSintactico = NULL;
 
 bool numeroEstaEnLaLista(int numero, t_nodo* lista)
 {
@@ -47,3 +48,8 @@ void agregarErrorBinarioEnLinea(int linea)
 void agregarErrorAsignacionEnLinea(int linea){
     lineasDeErrorAsignacion = agregarIntALista(linea,lineasDeErrorAsignacion);
 }
+
+void agregarErrorSintactico(int linea){
+    lineasDeErrorSintactico = agregarIntALista(linea,lineasDeErrorSintactico);
+}
+

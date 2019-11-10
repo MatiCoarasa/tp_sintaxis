@@ -39,12 +39,13 @@ int funcion(){
 	
 	int i;
 	
+	i*h(;
+	
 	i += 1;
 	i -= 1;
 	i += repetido + 2*4;
 	
 	123 = 12;
-	
 	
 	2*2*"hola" + 2234;
 	

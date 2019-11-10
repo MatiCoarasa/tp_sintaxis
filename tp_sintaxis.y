@@ -21,6 +21,7 @@ extern int yylineno;
 
 codigo:	declaracion codigo
 		| sentencia codigo
+		| error ';' codigo
 		|
 
 //Expresiones
@@ -178,16 +179,14 @@ int checkeoAsignacion(int tipoTerminoAsignado){
 	}
 }
 
-void yyerror(const char *msg) {
-	printf("línea %s\n", msg);
+void yyerror() {
+	agregarErrorSintactico(yylineno);
 }
 
 main ()
 {
-  yyin = fopen("entrada.c","r");
-  yyparse ();
-  printearVariablesDeclaradas();
-  printearFuncionesDeclaradas();
-  printearErroresSemanticos();
-  return 0;
+	yyin = fopen("entrada.c","r");
+	yyparse ();
+	reportar();
+	return 0;
 }

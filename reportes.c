@@ -2,6 +2,7 @@
 extern t_nodo* variablesRepetidas;
 extern t_nodo* lineasDeErrorBinario;
 extern t_nodo* lineasDeErrorAsignacion;
+extern t_nodo* lineasDeErrorSintactico;
 extern t_nodo* variablesDeclaradas;
 extern t_nodo* funcionesDeclaradas;
 
@@ -25,63 +26,58 @@ void printearLineaDeArchivo(int lineaALeer){
 
 }
 
+void printearListaDeErrores(t_nodo* lista){
+
+    while(lista != NULL){
+        int* unaLinea = lista->valor;
+        printf("->Error en la linea %i\n",*unaLinea);
+        printearLineaDeArchivo(*unaLinea);
+        lista = lista->siguiente;
+    }
+}
+
 void printearVariablesRepetidas()
 {
-    printf("-Doble declaracion de variables-\n");
+    printf("__Doble declaracion de variables__\n\n");
 
     t_nodo* listaAux = variablesRepetidas;
 
     while(listaAux != NULL)
     {
         t_variableDeclarada* unaVariable = listaAux->valor;
-        printf("%s %s;\n", unaVariable->tipoVariable, unaVariable->nombreVariable);
+        printf("->%s %s;\n", unaVariable->tipoVariable, unaVariable->nombreVariable);
         listaAux = listaAux->siguiente;
     }
 }
-
 
 void printearErroresBinarios(){
-    printf("-Errores en operaciones binarias-\n");
-
-    t_nodo* listaAux = lineasDeErrorBinario;
-
-    while(listaAux != NULL){
-        int* unaLinea = listaAux->valor;
-        printf("Error en la linea %i: ",*unaLinea);
-        printearLineaDeArchivo(*unaLinea);
-        listaAux = listaAux->siguiente;
-    }
+    printf("__Errores en operaciones binarias__\n\n");
+   printearListaDeErrores(lineasDeErrorBinario);
 }
 
-void printearErroresDeAsignacion(){ //La logica esta repetida con la funcion de arriba. Tal vez se puede delegar.
-    printf("-Errores de asignacion-\n");
-
-    t_nodo* listaAux = lineasDeErrorAsignacion;
-
-    while(listaAux != NULL){
-        int* unaLinea = listaAux->valor;
-        printf("Error en la linea %i\n",*unaLinea);
-        printearLineaDeArchivo(*unaLinea);
-        listaAux = listaAux->siguiente;
-    }
+void printearErroresDeAsignacion(){
+    printf("__Errores de asignacion__\n\n");
+    printearListaDeErrores(lineasDeErrorAsignacion);
 }
-
 void printearErroresSemanticos()
 {
     printf("--ERRORES SEMANTICOS--\n\n");
     printearVariablesRepetidas();
-    printf("\n--\n");
+    printf("\n\n");
     printearErroresBinarios();
-    printf("\n--\n");
+    printf("\n\n");
     printearErroresDeAsignacion();
-    printf("\n--\n");
 
+}
+
+void printearErroresSintacticos(){
+    printf("--ERRORES SINTACTICOS--\n\n");
+    printearListaDeErrores(lineasDeErrorSintactico);
 }
 
 
 void printearVariablesDeclaradas()
 {
-
     printf("--VARIABLES DECLARADAS--\n\n");
 
     t_nodo* listaAux = variablesDeclaradas;
@@ -92,16 +88,14 @@ void printearVariablesDeclaradas()
         printf("%s %s;\n", unaVariable->tipoVariable, unaVariable->nombreVariable);
         listaAux = listaAux->siguiente;
     }
-
-    printf("------\n\n");
 }
 
 void printearParametrosDeFuncion(t_funcionDeclarada* unaFuncion){
     t_nodo* listaAux = unaFuncion->tiposDeParametros;
 
     while(listaAux != NULL){
-        if(listaAux->siguiente == NULL){
-            printf("%s",listaAux->valor); //Por una cuestion estetica, si no quedaria por ejemplo "int, char, float, ".
+        if(listaAux->siguiente == NULL){ //Por una cuestion estetica, si no quedaria por ejemplo "int, char, float, ".
+            printf("%s",listaAux->valor);
         }
         else{
             printf("%s, ",listaAux->valor);
@@ -123,5 +117,15 @@ void printearFuncionesDeclaradas(){
         printf(");\n");
         listaAux = listaAux->siguiente;
     }
-    printf("------\n\n");
+}
+
+void reportar(){
+    printearVariablesDeclaradas();
+    printf("\n\n\n");
+    printearFuncionesDeclaradas();
+    printf("\n\n\n");
+    printearErroresSemanticos();
+    printf("\n\n\n");
+    printearErroresSintacticos();
+
 }
